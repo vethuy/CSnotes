@@ -85,6 +85,53 @@ Daily entries first; the Week 1 review at the bottom gets filled on Day 7.
 - **Still open:** `check_int` now returns silently while `check_float` still prints (asymmetric); the invalid-mode message prints `None` instead of the typed text (keep `raw`); `round` lives inside the conversion functions instead of `:.1f` at print time; redundant `return int(a)` / `float(a)`; `[1, 2]` → `(1, 2)`; typos "convent" → "convert", "a available" → "an available".
 - **Notes:** verified by piping input — `1/100` → 212.0 F, `1/37` → 98.6 F, `2/212` → 100.0 C, `1/-40` → -40.0 F; `1/abc`, `2/<Enter>`, `abc`, `1.5`, `5` all print one message and exit without a traceback. Idea for next time: one `ask_number(prompt, cast, choices)` helper that loops, with `ask_int` / `ask_float` as one-line wrappers.
 
+## Day 4 — 2026-11-10
+
+**Shipped:** `week1/day04_leap_year.py` — leap-year checker with input validation. All four test years come out right (`2024`/`2000` → leap, `1900`/`2023` → not leap), and `abc` or an empty line prints a message instead of a traceback.
+
+- **Bug (the big one):** `is_leap` returned the strings `'True'` / `'False'`, not the booleans `True` / `False`.
+  - **Why:** I read "returns `True` or `False`" as "prints the word True / False", so I put quotes around them. Quotes make a `str`; the requirement was a `bool`. And `print()` calls `str()` on its arguments, while `str(True) == str('True') == "True"` — so the console output was **identical** either way and the bug was invisible from outside.
+  - **How I caught it:** stop looking at the output, look at the value. `type(is_leap(2024))` → `str`, not `bool`. `is_leap(2024) == True` → `False`. And the dangerous one: `bool(is_leap(1900))` → `True`, because a non-empty string is always truthy — so `if is_leap(1900):` takes the **true** branch, and every caller that trusts the return value reports a non-leap year as leap. My four "correct" outputs were hiding a wrong function.
+  - **Fix:** return the values, not their names — `return True` / `return False`, no quotes. Better still, the rule is *already* a boolean expression, so the nested `if` collapses to one line:
+    ```python
+    def is_leap(year):
+        return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)
+    ```
+  - **Same family of traps:** `true` / `false` lowercase are `NameError` (Python is case-sensitive, unlike Java/C#); `bool("")` is `False` but `bool("False")` is `True`; `not year % 100 == 0` parses as `not (year % 100 == 0)` — correct, but a double negative, so write `year % 100 != 0`.
+
+- **The view that unlocked it — two layers, not one.** I was asking `is_leap` to do two jobs at once: *decide the fact* and *tell the human*. They are different layers:
+
+  ```
+  raw text ──check_int──▶ int or None
+                            │
+                        is_leap(year) ──▶ True / False      DECIDE   (pure: no input(), no print())
+                            │
+                        main(): words + print              RENDER   (the only layer that talks to a human)
+  ```
+
+  - `is_leap` answers *"is this year leap?"* as data. `main()` turns that data into the sentence *"2024 is a leap year"*.
+  - The sentence is a **rendering** of `True`, not the thing itself. Rendering can change — a sentence, a table cell, `✓`, Chinese — without touching the rule.
+  - So the requirement was never in conflict: *"print whether it is a leap year"* and *"`is_leap` returns `True`/`False`"* are both satisfied — by two different functions. The printing moves **out of** `is_leap`, not away.
+  - **Proof the layers are real:** with a bool-returning `is_leap` I can ask questions no `input()` prompt can ask — `[y for y in range(1990, 2011) if is_leap(y)]` → `[1992, 1996, 2000, 2004, 2008]`; `sum(1 for y in range(1900, 2101) if is_leap(y))` → `49`. Against a printing version, that list comprehension would be swallowing 21 lines of `yes`/`no`. And `assert is_leap(2024) is True` needs a *value* to compare — that's the seed of Week 3's pytest.
+  - **Rule I'm keeping:** compute → decide → render, and only the outermost layer may `print`. Same shape as Day 2's `grade()` returning `'A'` and Day 3's `check_float` printing *and* returning `None` — there I already wrote the cost down ("the caller must both watch for `None` and avoid printing again, which is exactly how I got two messages"); I just hadn't seen it as a layer rule yet.
+
+- **Bug:** the `input()` sat at module level, so the file ran on *import*.
+  - **Why:** `from day04_leap_year import is_leap` executes the file top to bottom, reaches the prompt, and dies with `EOFError: EOF when reading a line`. The function was unreachable from any other file — so "it returns a value" had no one to return it to yet.
+  - **Fix:** wrap the driver in `main()` and guard it:
+    ```python
+    if __name__ == "__main__":
+        main()
+    ```
+    Then importing the file gives me `is_leap` silently, and running it still asks the question.
+
+- **Bug (waste, not breakage):** `if year%4==0: … return True else: return False` — a condition compared only to hand back the condition.
+  - **Why:** I thought the `if` had to "produce" the boolean. It doesn't: `if` is a **statement** — it chooses a path, it never returns a value. The comparison `year % 4 == 0` is *already* `True`/`False`.
+  - **Fix:** every `if X: return True / else: return False` is just `return X`.
+
+- **Fixed today:** `return int(a)` → `return a` in `check_int` (`a` is already an `int`); typo "avaliable" → "available" (third time this week — start `Ctrl+F`-ing before commit).
+- **Learned:** a value's *type* is not its *printout*. `print` is lossy: it can't tell `True` from `'True'`, `1` from `'1'`, `None` from `'None'`. When something looks right, check `type()` and `repr()` before believing it.
+- **Learned:** "returns `True` or `False`" in a spec is a statement about the **type**, not the wording. Specs describe interfaces; the user-facing sentence is mine to write at the edge.
+- **Still open:** the quotes are still in the file (`return 'True'` ×2, `return 'False'` ×2) and there's no `main()` yet; the error message still doesn't echo what was typed (`raw`); the module docstring is still the assignment text instead of "what this file does"; 
 ---
 
 ## Week 1 review — fill in on Day 7
