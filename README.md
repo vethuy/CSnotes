@@ -1,6 +1,6 @@
 # cs-notes
 
-My notes and programming exercises for an 8-week CS study plan.
+My notes and programming exercises for an 8-week CS study plan.(btw this is all ai planned.lets see my improvement 8 week later)
 
 ## Goal
 
