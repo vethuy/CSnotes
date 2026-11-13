@@ -33,5 +33,5 @@ One entry a day: **what happened, why, what fixed it.** The Week 1 review at the
 ## Week 1 review — fill in on Day 7
 
 - **What shipped this week?** 5 programs (fizzbuzz, grade calculator, temperature, leap year, days between) + 3 reading labs.
-- **What confused me most?** _TODO — skim the entries above; the repeated one is the answer._
-- **What is the #1 goal for Week 2?** _TODO_
+- **What confused me most?** absolutly Day5 programming.There a lot of new thing such as datetime module and loop section.i need to check online source to understand how module works and how to use it.
+- **What is the #1 goal for Week 2?** a small goal.Finish the tasks on time.
