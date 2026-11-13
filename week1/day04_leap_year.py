@@ -20,13 +20,13 @@ def check_int(check):
 def is_leap(year):
     if year%4==0:
         if not year%100==0:
-            return 'True'
+            return True
         elif year%400==0:
-            return 'True'
+            return True
         else:
-            return 'False'
+            return False
     else:
-        return 'False'        
+        return False       
     
 
 raw=input('input a year:')
@@ -35,5 +35,6 @@ if user is None:
     print('This is not an available year')
 else:
     print(is_leap(user))        
+   
 
    

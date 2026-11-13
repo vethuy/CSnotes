@@ -6,10 +6,10 @@
 - Use the `datetime` module.
 - Handle invalid date text without crashing.'''
 
-from datetime import datetime
+from datetime import date
 def time_check(check):
     try:
-        return datetime.fromisoformat(check)
+        return date.fromisoformat(check)
     except ValueError:
         print(check,'is not YYYY-MM-DD format')
         return
@@ -21,7 +21,7 @@ def main(a):
         time=input('input a time in YYYY-MM-DD format:')
         parsed= time_check(time)
         if parsed is None:
-            return
+            continue
         else:
             timelist.insert(a,parsed)
             a=a+1

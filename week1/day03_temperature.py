@@ -19,7 +19,7 @@ def check_float(check):
     try:
         a=float(check)
     except ValueError:
-        print(check,"is not a available value")  
+        print(check,"is not a valid")  
     else:
         return float(a)
 
@@ -29,14 +29,14 @@ def fahrenheit_to_celsius(f):
 
 def mode(u):
     if u==1:
-        c=input("input a celsius that you want to convent to fahrenheit:")
+        c=input("input a celsius that you want to convert to fahrenheit:")
         c=check_float(c)
         if c is None:
             return
         else:
             print("celsius to fahrenheit",c,"C->",celsius_to_fahrenheit(c),"F")
     elif u==2:
-        f=input("input a fahrenheit that you want to convent to celsius:")
+        f=input("input a fahrenheit that you want to convert to celsius:")
         f=check_float(f)
         if f is None:
             return
