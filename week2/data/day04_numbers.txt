@@ -1,6 +1,0 @@
-# weekly readings, one number per line
-12.5
-7
--3.25
-
-42

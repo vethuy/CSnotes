@@ -12,9 +12,15 @@ RULES
 
 THE POINT: week 1 printed from inside the worker. From today the worker hands
 a value back and lets the caller decide what to do with it.
+
+LOAD: 3 drills, about 60 minutes (20 each). Each drill carries a CORE IDEA
+line - read it before you type, it is the one thought that unlocks the drill.
+If you are still stuck 5 minutes after reading it, ask.
 """
 
 
+# CORE IDEA: "largest, not max" is a question about DUPLICATES, not about
+# sorting. Design the [5, 5] case first and let it choose the algorithm.
 def second_largest(nums):
     """Return the largest value in nums strictly smaller than max(nums).
 
@@ -28,6 +34,8 @@ def second_largest(nums):
     raise NotImplementedError("second_largest")
 
 
+# CORE IDEA: a rotation is a CUT, not a movement. One list becomes two
+# pieces; the answer is those pieces in the other order.
 def rotate_left(nums, k):
     """Return a NEW list: the items of nums rotated left by k positions.
 
@@ -41,6 +49,8 @@ def rotate_left(nums, k):
     raise NotImplementedError("rotate_left")
 
 
+# CORE IDEA: you cannot delete from a list while you are reading it. Build
+# the answer as a SECOND list and ask the new list what it already holds.
 def remove_duplicates(nums):
     """Return a new list with duplicates removed, first-seen order kept.
 
@@ -48,41 +58,6 @@ def remove_duplicates(nums):
     remove_duplicates([])              -> []
     """
     raise NotImplementedError("remove_duplicates")
-
-
-def chunk(nums, size):
-    """Split nums into a list of lists, each of length size except the last.
-
-    size is a positive int. chunk([], size) returns [].
-
-    chunk([1, 2, 3, 4, 5], 2) -> [[1, 2], [3, 4], [5]]
-    chunk([1, 2, 3], 5)       -> [[1, 2, 3]]
-    """
-    raise NotImplementedError("chunk")
-
-
-def middle(nums):
-    """Return the middle item of an odd-length list, a TUPLE of the two
-    middle items of an even-length list, and None for an empty list.
-
-    middle([1, 2, 3])    -> 2
-    middle([1, 2, 3, 4]) -> (2, 3)
-    middle([])           -> None
-    """
-    raise NotImplementedError("middle")
-
-
-def is_palindrome(text):
-    """Return True when text reads the same backwards, ignoring case,
-    spaces and punctuation. Return False otherwise. "" is True.
-
-    Only letters and digits are compared.
-
-    is_palindrome("Level")                          -> True
-    is_palindrome("A man, a plan, a canal: Panama") -> True
-    is_palindrome("abc")                            -> False
-    """
-    raise NotImplementedError("is_palindrome")
 
 
 # --------------------------------------------------------------------------
@@ -109,22 +84,5 @@ if __name__ == "__main__":
     assert remove_duplicates([3, 1, 3, 2, 1]) == [3, 1, 2]
     assert remove_duplicates([]) == []
     assert remove_duplicates([1, 1, 1]) == [1]
-
-    # chunk
-    assert chunk([1, 2, 3, 4, 5], 2) == [[1, 2], [3, 4], [5]]
-    assert chunk([], 2) == []
-    assert chunk([1, 2, 3], 5) == [[1, 2, 3]]
-
-    # middle
-    assert middle([1, 2, 3]) == 2
-    assert middle([1, 2, 3, 4]) == (2, 3)
-    assert middle([]) is None
-
-    # is_palindrome
-    assert is_palindrome("level") is True
-    assert is_palindrome("Level") is True
-    assert is_palindrome("") is True
-    assert is_palindrome("A man, a plan, a canal: Panama") is True
-    assert is_palindrome("abc") is False
 
     print("all drills pass")

@@ -1,38 +1,56 @@
-"""Week 2 . Day 1 . reading lab 1 - statistics.mean  (Lib/statistics.py:472).
+"""Reading lab 1 - what a returned number really is.
 
-WHAT THIS LAB IS
-----------------
-You read one small function in the standard library, then close the file and
-rebuild its shape from memory. Simplified is fine. Do not import the module you
-are rewriting and do not paste from it.
+READ FIRST, RUN LATER (20 minutes)
+ 1. Read mean() and the four calls below. Leave the terminal closed.
+ 2. Write your four answers in the PREDICTION block at the bottom.
+ 3. Only then run:  python week2/day01_readinglab1.py
+ 4. Copy the printed lines into ACTUAL and mark each one right or wrong.
+    Nothing in this file is yours to write.
 
-LAST 3 MINUTES OF THE LAB: write the body below, from memory, then run the
-check. If the check fails, do not reopen the source - read the error and think.
+The stdlib version: statistics.py:472 `mean`. Read it for the 12-minute part;
+it guards the empty list and hands back an int when it can. That int is the
+surprise prediction 2 is about.
 
-RUN THE CHECK:   python week2/day01_readinglab1.py
+The try/except around call 4 is only there so the file can finish and show
+you the answer. Friday is when you learn it properly - read it as "catch the
+error, print its name".
 """
 
 
-def my_mean(data):
-    """Return the arithmetic mean of data as a float.
+def mean(nums):
+    """Return the arithmetic mean of nums. nums must be non-empty."""
+    total = 0
+    for n in nums:
+        total = total + n
+    return total / len(nums)
 
-    An empty sequence raises ValueError. data is not modified.
-    my_mean([1, 2, 3]) -> 2.0
-    """
-    raise NotImplementedError("my_mean")
 
-
-# --------------------------------------------------------------------------
-# CHECK - do not edit below this line
-# --------------------------------------------------------------------------
+# --------------------------------------------------------------- the answers
+# Predict these four, IN THE BLOCK AT THE BOTTOM, before running.
 if __name__ == "__main__":
-    assert my_mean([1, 2, 3]) == 2.0
-    assert my_mean([2, 2]) == 2.0
+    print("1) mean([1, 2, 3, 4]) =", repr(mean([1, 2, 3, 4])))
+    print("2) mean([1, 2, 3]) =", repr(mean([1, 2, 3])))
+    print("3) mean([1, 2, 3]) == 2 =", repr(mean([1, 2, 3]) == 2))
     try:
-        my_mean([])
-    except ValueError:
-        pass
-    else:
-        raise AssertionError("my_mean([]) must raise ValueError")
+        mean([])
+    except Exception as exc:
+        # type(exc).__name__ is the class name of what went wrong, as a string.
+        print("4) mean([]) ->", type(exc).__name__)
 
-    print("rewrite 1 passes")
+
+'''PREDICTION - write these four lines BEFORE running the file.
+
+1)
+2)
+3)
+4)
+
+ACTUAL - paste the four printed lines here, then compare.
+
+1)
+2)
+3)
+4)
+
+One sentence on the miss (if any):
+'''

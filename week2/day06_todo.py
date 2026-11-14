@@ -1,158 +1,191 @@
-"""Week 2 . Day 6 . day06_todo.py - JSON-backed to-do list.
+"""Week 2 project - a to-do CLI that survives between runs.
 
-RUN THE PROGRAM:   python week2/day06_todo.py list
-                   python week2/day06_todo.py add "read chapter 3"
-                   python week2/day06_todo.py done 1
-                   python week2/day06_todo.py remove 2
-RUN THE CHECKS:    python week2/day06_todo.py --check
+RUN THE CHECKS
+    python week2/day06_todo.py --check
 
-REQUIREMENTS
-------------
-* Storage is week2/data/day06_todos.json, a JSON array of objects:
-      [{"id": 1, "text": "read chapter 3", "done": false}]
-  The path is fixed and resolved from this file, so the program works from any
-  folder. save() creates the data folder when it is missing.
-* load(path) returns [] when the file does not exist. A file that exists but
-  holds broken JSON raises json.JSONDecodeError - it is not silently replaced.
-* Every function except main() returns a value. main(argv) prints and returns
-  the exit code: 0 success, 1 usage error or unknown id.
-* ids are never reused while a task with a higher id exists:
-  new id = max(existing ids, default 0) + 1.
-* render([]) returns "" ; otherwise one "[x] <id>. <text>" line per task,
-  join with "\\n", no trailing newline.
+USE IT (from the repo root, C:\\Users\\User\\computer science\\CSnotes)
+    python week2/day06_todo.py list
+    python week2/day06_todo.py add "read chapter 3"
+    python week2/day06_todo.py done 1
+    python week2/day06_todo.py remove 2
 
-COMMANDS
---------
-    list              print every task, or "No tasks yet."
-    add <text>        append with the next id, print "Added <id>"
-    done <id>         mark as done, print "Updated <id>"
-    remove <id>       delete it, print "Removed <id>"
-    <id> not a number or unknown   print "No task with id <what>" (or a usage
-                                    line for an unknown command), return 1
+RULES
+ 1. Your functions RETURN a value. Only `main` prints. If a function prints,
+    the checks cannot see its answer and the program cannot be tested.
+ 2. `add`, `complete` and `remove` return a NEW list. They must not change the
+    list they were given - the checks look for that.
+ 3. A missing file is an empty list, not an error. Only a broken file is an
+    error, and `load` lets that error out.
+ 4. An unknown task id is a ValueError with the number in the message.
+ 5. Work in the order given in PROJECT_weekend.md. Run --check after every
+    function you finish; do not write all seven and then run it once.
 
-ACCEPTANCE - run these six, in this order, from the CSnotes folder.
-Delete week2/data/day06_todos.json before you start.
+THE POINT
+ The whole week in one file: list of dicts in memory, json on disk, id as an
+ int, messages as strings, ValueError at the edge, exit code at the top.
 
- 1  python week2/day06_todo.py list                     -> No tasks yet.
- 2  python week2/day06_todo.py add "read chapter"
-    python week2/day06_todo.py add "write drills"       -> Added 1 / Added 2
- 3  python week2/day06_todo.py list                     -> two "[ ]" lines, 1 then 2
- 4  python week2/day06_todo.py done 1
-    python week2/day06_todo.py list                     -> "[x] 1. read chapter"
- 5  python week2/day06_todo.py remove 2
-    python week2/day06_todo.py list                     -> only task 1
- 6  python week2/day06_todo.py done 99                  -> No task with id 99, exit 1
-
-Then: python -c "import json;print(json.load(open('week2/data/day06_todos.json')))"
-and run every command a second time - the state must survive.
+LOAD
+ Deadline: Sat 21 Nov, 11:45. Yesterday's drills are the parts shelf - steal
+ from them, that is not cheating, that is remembering.
 """
 
 import json
 import sys
 from pathlib import Path
 
-DATA = Path(__file__).resolve().parent / "data"
-TODOS = DATA / "day06_todos.json"
+DATA_PATH = Path(__file__).resolve().parent / "data" / "day06_todos.json"
 
 
+# --------------------------------------------------------------------------
+# 1. disk
+# --------------------------------------------------------------------------
 def load(path):
-    """Return the task list stored at path, or [] when path does not exist."""
+    """Return the list of task dicts stored at path.
+
+    Missing file      -> []          (first run is not an error)
+    Broken JSON       -> let json raise; do not swallow it
+    """
     raise NotImplementedError("load")
 
 
 def save(path, items):
-    """Write items to path as JSON, indent=2, creating the folder if needed."""
+    """Write items to path as JSON.
+
+    - indent=2 so the file is readable and diff-friendly
+    - create the parent folder if missing (Path.parent.mkdir(parents=True,
+      exist_ok=True))
+    - return None
+    """
     raise NotImplementedError("save")
 
 
+# --------------------------------------------------------------------------
+# 2. the list of dicts
+# --------------------------------------------------------------------------
 def add(items, text):
-    """Return a new list with text appended, done=False, next free id."""
+    """Return a NEW list with one more task.
+
+    New task: {"id": max existing id + 1 (0 if empty), "text": text,
+               "done": False}
+    """
     raise NotImplementedError("add")
 
 
-def complete(items, task_id):
-    """Return a new list with task_id marked done.
+def complete(items, n):
+    """Return a NEW list where the task with id n has done=True.
 
-    Raises ValueError("No task with id <task_id>") when the id is unknown.
+    Unknown n -> raise ValueError("No task with id 99")   (f-string it)
     """
     raise NotImplementedError("complete")
 
 
-def remove(items, task_id):
-    """Return a new list without task_id.
+def remove(items, n):
+    """Return a NEW list without the task whose id is n.
 
-    Raises ValueError("No task with id <task_id>") when the id is unknown.
+    Unknown n -> raise ValueError with the number in the message.
     """
     raise NotImplementedError("remove")
 
 
+# --------------------------------------------------------------------------
+# 3. text out
+# --------------------------------------------------------------------------
 def render(items):
-    """Return the printable form of items: "[x] 1. text" lines joined by \\n."""
+    """Return the whole list as one string.
+
+    []            -> "No tasks yet."
+    two tasks     -> "[ ] 1. read chapter\\n[ ] 2. write drills"
+    done task     -> "[x] 1. read chapter"
+    """
     raise NotImplementedError("render")
 
 
+# --------------------------------------------------------------------------
+# 4. the front door
+# --------------------------------------------------------------------------
 def main(argv):
-    """Dispatch one command from argv, print the result, return the exit code."""
+    """Run one command from the command line and return an exit code.
+
+    argv is sys.argv[1:], e.g. ["add", "buy milk"] or ["done", "1"].
+    An optional "--path", P overrides DATA_PATH (the checks rely on it).
+
+    list           -> print render(load(path))            return 0
+    add TEXT       -> save, print "Added <id>"            return 0
+    done N         -> save, print "Done: <text>"          return 0
+    remove N       -> save, print "Removed <id>"          return 0
+    ValueError     -> print the message                   return 1
+    unknown cmd    -> print "Unknown command: <cmd>"      return 1
+
+    main() is the only function allowed to print. It returns, it never calls
+    sys.exit - the last two lines of this file do that.
+    """
     raise NotImplementedError("main")
 
 
 # --------------------------------------------------------------------------
 # CHECKS - do not edit below this line
 # --------------------------------------------------------------------------
-def run_checks():
-    # add
-    assert add([], "a") == [{"id": 1, "text": "a", "done": False}]
-    two = add(add([], "a"), "b")
-    assert [task["id"] for task in two] == [1, 2]
-    assert add([{"id": 7, "text": "x", "done": True}], "y")[1]["id"] == 8
-    original = []
-    add(original, "a")
-    assert original == [], "add must not modify the list it receives"
+def _check():
+    import io
+    import tempfile
+    from contextlib import redirect_stdout
 
-    # complete
-    tasks = [{"id": 1, "text": "a", "done": False}]
-    assert complete(tasks, 1) == [{"id": 1, "text": "a", "done": True}]
-    assert tasks[0]["done"] is False, "complete must return a new list"
-    try:
-        complete(tasks, 99)
-    except ValueError as exc:
-        assert "99" in str(exc)
-    else:
-        raise AssertionError("complete must raise ValueError for an unknown id")
+    with tempfile.TemporaryDirectory() as tmp:
+        path = Path(tmp) / "nested" / "todos.json"
 
-    # remove
-    tasks = [
-        {"id": 1, "text": "a", "done": False},
-        {"id": 2, "text": "b", "done": True},
-    ]
-    assert remove(tasks, 1) == [{"id": 2, "text": "b", "done": True}]
-    assert len(tasks) == 2, "remove must return a new list"
-    try:
-        remove(tasks, 99)
-    except ValueError:
-        pass
-    else:
-        raise AssertionError("remove must raise ValueError for an unknown id")
+        assert load(path) == []
+        assert render([]) == "No tasks yet."
 
-    # render
-    assert render([]) == ""
-    assert render([{"id": 1, "text": "a", "done": False}]) == "[ ] 1. a"
-    assert render([{"id": 2, "text": "b", "done": True}]) == "[x] 2. b"
-    assert render(
-        [
-            {"id": 1, "text": "a", "done": False},
-            {"id": 2, "text": "b", "done": True},
-        ]
-    ) == "[ ] 1. a\n[x] 2. b"
+        items = add(load(path), "read chapter")
+        items = add(items, "write drills")
+        assert [t["id"] for t in items] == [1, 2]
+        assert all(t["done"] is False for t in items)
+        assert items[1]["text"] == "write drills"
+        assert render(items) == "[ ] 1. read chapter\n[ ] 2. write drills"
 
-    # load on a missing file
-    assert load(DATA / "no_such_todos.json") == []
+        save(path, items)
+        assert path.exists(), "save must create the data folder"
+        assert load(path) == items
+        assert json.loads(path.read_text(encoding="utf-8")) == items
 
-    print("all checks pass")
+        done = complete(items, 1)
+        assert done[0]["done"] is True
+        assert items[0]["done"] is False, "complete must not change the old list"
+        assert render(done).splitlines()[0] == "[x] 1. read chapter"
+
+        after = remove(items, 2)
+        assert [t["id"] for t in after] == [1]
+        assert len(items) == 2, "remove must not change the old list"
+
+        for func in (complete, remove):
+            try:
+                func(items, 99)
+                assert False, f"{func.__name__} must raise ValueError for id 99"
+            except ValueError as exc:
+                assert "99" in str(exc), f"message must name the id: {exc}"
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = main(["list", "--path", str(path)])
+        assert code == 0
+        assert buf.getvalue().strip() == "[ ] 1. read chapter\n[ ] 2. write drills"
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = main(["done", "99", "--path", str(path)])
+        assert code == 1, "a bad id is a program failure, so the code is 1"
+        assert "99" in buf.getvalue()
+
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            code = main(["dance", "--path", str(path)])
+        assert code == 1
+
+    print("all project checks pass")
 
 
 if __name__ == "__main__":
-    if "--check" in sys.argv[1:]:
-        run_checks()
+    if sys.argv[1:] == ["--check"]:
+        _check()
     else:
         sys.exit(main(sys.argv[1:]))

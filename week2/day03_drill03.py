@@ -1,4 +1,4 @@
-"""Week 2 . Day 3 . set, and choosing the right container.
+"""Week 2 . Day 3 . set, and choosing the container.
 
 RUN THE CHECKS:   python week2/day03_drill03.py
 
@@ -6,64 +6,62 @@ RULES
 -----
 1. Every function RETURNS its result. Nothing above the check block prints.
 2. No input() in this file.
-3. Set order is never guaranteed: where the contract asks for a list,
-   the list has to be sorted or built by you.
-4. The check block is the acceptance test. Do not edit it.
+3. Do not modify the argument unless the contract says you may.
+4. Look up syntax only when a name is missing; 5 minutes maximum, then ask.
+5. The check block at the bottom is the acceptance test. Do not edit it.
 
-The __main__ block also runs a timing experiment. Its two numbers go into
-journal.md with one line: which container, and why.
+THE POINT: "have I seen this before?" is a set question. Once you answer it
+with a set, half your loops disappear - and so does the duplicate bug.
+
+LOAD: 1 drill, 3 functions, about 20-25 minutes. Each function carries a
+CORE IDEA line - read it before you type. Stuck 5 minutes after reading it?
+Ask.
 """
 
-import string
-import time
+PUNCTUATION = ".,!?;:\"'"
 
 
+# CORE IDEA: a set is not "a list with no duplicates" - it is the answer to
+# "which different things are in here?". Build it with a comprehension and
+# let the set do the de-duplicating you were writing by hand in week 1.
 def unique_words(text):
     """Return the set of distinct words in text.
 
-    Same normalisation as Day 2: lowercase, strip string.punctuation at both
-    ends, drop empties.
+    Lowercase the text, strip PUNCTUATION from both ends of each word, and
+    drop words that are empty after stripping. Return set() for "".
 
-    unique_words("Red red BLUE") -> {"red", "blue"}
-    unique_words("")             -> set()
+    unique_words("The cat, the dog!") -> {"the", "cat", "dog"}
+    unique_words("a a A")             -> {"a"}
+    unique_words("")                  -> set()
     """
     raise NotImplementedError("unique_words")
 
 
-def common_words(first, second):
-    """Return the words present in BOTH sets, as a sorted list.
+# CORE IDEA: & is intersection, | is union, - is difference. The operator
+# already means "both", so there is no loop left to write - only the sort,
+# because a set's order is not yours to choose.
+def common_words(a, b):
+    """Return a sorted list of the words that are in both a and b.
+
+    a and b are sets of words. Return [] when either is empty.
 
     common_words({"red", "blue"}, {"blue", "green"}) -> ["blue"]
+    common_words({"b", "a"}, {"a", "b"})             -> ["a", "b"]
     common_words(set(), {"a"})                       -> []
     """
     raise NotImplementedError("common_words")
 
 
-def missing_letters(text):
-    """Return the set of lowercase letters a-z that do not occur in text.
-
-    Case is ignored; characters that are not letters are ignored.
-
-    missing_letters("The quick brown fox jumps over the lazy dog") -> set()
-    len(missing_letters("abc"))                                    -> 23
-    """
-    raise NotImplementedError("missing_letters")
-
-
-def dedupe_fast(nums):
-    """Return the distinct items of nums as a list, in ANY order.
-
-    The body is one line and uses a set.
-    """
-    raise NotImplementedError("dedupe_fast")
-
-
+# CORE IDEA: keep order and remove duplicates at the same time: one list for
+# the answer, one set for "already answered". The set is a notebook, not the
+# output - so the output keeps its order.
 def dedupe_keep_order(nums):
-    """Return the distinct items of nums, first-seen order kept.
+    """Return a new list, duplicates removed, first-seen order kept.
 
-    One pass: a set that remembers what you have seen plus a list you append to.
+    nums must not be modified.
 
-    dedupe_keep_order([3, 1, 3, 2]) -> [3, 1, 2]
+    dedupe_keep_order([3, 1, 3, 2, 1]) -> [3, 1, 2]
+    dedupe_keep_order([])              -> []
     """
     raise NotImplementedError("dedupe_keep_order")
 
@@ -73,36 +71,25 @@ def dedupe_keep_order(nums):
 # --------------------------------------------------------------------------
 if __name__ == "__main__":
     # unique_words
-    assert unique_words("Red red BLUE") == {"red", "blue"}
+    assert unique_words("The cat, the dog!") == {"the", "cat", "dog"}
+    assert isinstance(unique_words("x"), set), "must return a set, not a list"
+    assert unique_words("a a A") == {"a"}
     assert unique_words("") == set()
-    assert unique_words("dog, dog.") == {"dog"}
+    assert unique_words("word") == {"word"}
 
     # common_words
     assert common_words({"red", "blue"}, {"blue", "green"}) == ["blue"]
-    assert common_words(set(), {"a"}) == []
     assert common_words({"b", "a"}, {"a", "b"}) == ["a", "b"]
+    assert common_words(set(), {"a"}) == []
+    assert common_words({"a"}, set()) == []
+    assert common_words({"a", "b"}, {"a", "b"}) == ["a", "b"]
 
-    # missing_letters
-    assert len(missing_letters("abc")) == 23
-    assert missing_letters("abc") == set(string.ascii_lowercase) - set("abc")
-    assert missing_letters("The quick brown fox jumps over the lazy dog") == set()
-    assert missing_letters("") == set(string.ascii_lowercase)
-
-    # dedupe
-    assert sorted(dedupe_fast([3, 1, 3, 2])) == [1, 2, 3]
-    assert dedupe_fast([]) == []
-    assert dedupe_keep_order([3, 1, 3, 2]) == [3, 1, 2]
+    # dedupe_keep_order
+    assert dedupe_keep_order([3, 1, 3, 2, 1]) == [3, 1, 2]
     assert dedupe_keep_order([]) == []
-    assert dedupe_keep_order(["a", "a"]) == ["a"]
-
-    # timing experiment (prints, does not assert) - copy both numbers to journal.md
-    big_list = list(range(200_000))
-    big_set = set(big_list)
-    for name, container in (("list", big_list), ("set", big_set)):
-        start = time.perf_counter()
-        for _ in range(1000):
-            199_999 in container
-        elapsed_ms = round((time.perf_counter() - start) * 1000, 1)
-        print(f"{name:5} {elapsed_ms:>8} ms")
+    assert dedupe_keep_order([1, 1, 1]) == [1]
+    source = [4, 4, 5]
+    dedupe_keep_order(source)
+    assert source == [4, 4, 5], "dedupe_keep_order must not modify its argument"
 
     print("all drills pass")

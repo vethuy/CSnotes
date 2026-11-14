@@ -4,117 +4,104 @@ RUN THE CHECKS:   python week2/day04_drill04.py
 
 RULES
 -----
-1. Every function RETURNS its result (or None when it only writes).
-2. Always pass encoding="utf-8" to open().
-3. A path that does not exist must raise FileNotFoundError - do not catch it
-   here; Friday's job is to decide what main() says about it.
-4. The check block is the acceptance test. Do not edit it.
+1. Every function RETURNS its result. Nothing above the check block prints.
+2. No input() in this file.
+3. Do not modify the argument unless the contract says you may.
+4. Look up syntax only when a name is missing; 5 minutes maximum, then ask.
+5. The check block at the bottom is the acceptance test. Do not edit it.
 
-MANUAL CHECKS (they create files, so they are not in the check block).
-Run these from the CSnotes folder, then look at the result:
+THE POINT: a file is not a thing you read - it is a stream you walk one line
+at a time. Every line still carries its "\\n" until you strip it.
 
-    python -c "from week2 import day04_drill04 as d; d.write_numbered('week2/data/out.txt', ['first', 'second'])"
-    type week2\\data\\out.txt
-
-Expected content of week2\\data\\out.txt:
-
-    1. first
-    2. second
-
-    python -c "from week2 import day04_drill04 as d; d.append_log('week2/data/out.txt', 'hello')"
-    type week2\\data\\out.txt
-
-The second command adds a line shaped like  2026-11-19 20:31 | hello
-(run it twice: the line is appended, nothing is overwritten).
-Delete week2\\data\\out.txt when you are done.
+LOAD: 1 drill, 3 functions, about 20-25 minutes. Each function carries a
+CORE IDEA line - read it before you type. Stuck 5 minutes after reading it?
+Ask. The check block writes its files into a temporary folder, so you never
+need to clean anything up.
 """
 
-from pathlib import Path
 
-DATA = Path(__file__).resolve().parent / "data"
-SAMPLE = DATA / "day02_sample.txt"
-NUMBERS = DATA / "day04_numbers.txt"
-
-
+# CORE IDEA: "how many lines" is not len(file) - it is a count of the lines
+# that have something in them. Decide what an empty line means before you
+# write the loop, and you will not need two passes over the file.
 def count_lines(path):
-    """Return how many lines of the file are not blank.
+    """Return how many lines in the file have visible text.
 
-    A line holding only whitespace counts as blank. The "\\n" is not content.
+    A line that is empty or only whitespace does not count.
+    path may be a str or a pathlib.Path.
 
-    count_lines(week2/data/day02_sample.txt) -> 3
+    count_lines("one.txt") -> 3   # for a file with 5 lines, 2 of them blank
     """
     raise NotImplementedError("count_lines")
 
 
+# CORE IDEA: "the longest" needs a memory, and the memory starts empty. Keep
+# the best line you have seen so far and replace it only when the new line is
+# strictly longer - "strictly" is what keeps the first one on a tie.
 def longest_line(path):
-    """Return the stripped text of the longest line that carries content.
+    """Return the longest line with surrounding whitespace stripped.
 
-    Blank lines and lines whose stripped form starts with "#" are skipped.
-    Ties: the first one wins.
-    The returned string has no trailing "\\n".
+    Return "" when the file has no non-blank line. On a tie return the line
+    that appears first.
 
-    longest_line(week2/data/day02_sample.txt).startswith("The dog barks") -> True
-    longest_line(week2/data/day04_numbers.txt)                           -> "-3.25"
+    longest_line("one.txt") -> "second line"
     """
     raise NotImplementedError("longest_line")
 
 
+# CORE IDEA: a reader has two kinds of line: data and commentary. Skipping
+# is a filter, and converting is a second step - keep them apart and the
+# failure tells you which line was wrong.
 def read_numbers(path):
-    """Return the file's numbers as a list of float.
+    """Return a list of floats read from the file.
 
-    Blank lines and lines whose stripped form starts with "#" are skipped.
-    Anything else must convert with float(); a bad line raises ValueError
-    and is not skipped silently.
+    Skip blank lines, and skip lines whose first non-space character is "#".
+    A line that is not a number raises ValueError whose message contains the
+    offending text.
 
-    read_numbers(week2/data/day04_numbers.txt) -> [12.5, 7.0, -3.25, 42.0]
+    read_numbers("nums.txt") -> [1.5, 2.0, 3.25]
     """
     raise NotImplementedError("read_numbers")
-
-
-def write_numbered(path, lines):
-    """Write lines to path as "1. <line>" numbered from 1, one per row.
-
-    The file is overwritten. The last row ends with a newline.
-    Returns None.
-    """
-    raise NotImplementedError("write_numbered")
-
-
-def append_log(path, message):
-    """Append one line to path: "<YYYY-MM-DD HH:MM> | <message>".
-
-    The timestamp comes from datetime.now().strftime("%Y-%m-%d %H:%M").
-    The file is created when it does not exist. Earlier content is kept.
-    Returns None.
-    """
-    raise NotImplementedError("append_log")
 
 
 # --------------------------------------------------------------------------
 # CHECKS - do not edit below this line
 # --------------------------------------------------------------------------
 if __name__ == "__main__":
-    # count_lines
-    assert count_lines(SAMPLE) == 3
-    assert count_lines(NUMBERS) == 5
+    import tempfile
+    from pathlib import Path
 
-    # longest_line
-    longest = longest_line(SAMPLE)
-    assert longest.startswith("The dog barks"), f"got {longest!r}"
-    assert not longest.endswith("\n")
-    assert longest_line(NUMBERS) == "-3.25"
+    with tempfile.TemporaryDirectory() as tmp:
+        folder = Path(tmp)
+        basic = folder / "basic.txt"
+        basic.write_text("first\n\nsecond line\n   \nthird\n", encoding="utf-8")
+        assert count_lines(basic) == 3
+        assert longest_line(basic) == "second line"
 
-    # read_numbers
-    assert read_numbers(NUMBERS) == [12.5, 7.0, -3.25, 42.0]
-    assert all(isinstance(value, float) for value in read_numbers(NUMBERS))
+        empty = folder / "empty.txt"
+        empty.write_text("", encoding="utf-8")
+        assert count_lines(empty) == 0
+        assert longest_line(empty) == ""
 
-    # a path that does not exist must not be swallowed here
-    for func in (count_lines, longest_line, read_numbers):
+        blanks = folder / "blanks.txt"
+        blanks.write_text("\n   \n\t\n", encoding="utf-8")
+        assert count_lines(blanks) == 0
+        assert longest_line(blanks) == ""
+
+        tie = folder / "tie.txt"
+        tie.write_text("abcd\nwxyz\n", encoding="utf-8")
+        assert longest_line(tie) == "abcd", "on a tie keep the first line"
+
+        nums = folder / "nums.txt"
+        nums.write_text("1.5\n\n# a note\n2\n  3.25  \n", encoding="utf-8")
+        assert read_numbers(nums) == [1.5, 2.0, 3.25]
+        assert read_numbers(empty) == []
+
+        bad = folder / "bad.txt"
+        bad.write_text("1.5\nnot-a-number\n", encoding="utf-8")
         try:
-            func(DATA / "no_such_file.txt")
-        except FileNotFoundError:
-            pass
-        else:
-            raise AssertionError(f"{func.__name__} must let FileNotFoundError escape")
+            read_numbers(bad)
+            assert False, "a bad line must raise ValueError"
+        except ValueError as exc:
+            assert "not-a-number" in str(exc), "the message must name the bad line"
 
-    print("all checks pass")
+    print("all drills pass")
