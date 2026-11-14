@@ -13,9 +13,9 @@ RULES
 THE POINT: week 1 printed from inside the worker. From today the worker hands
 a value back and lets the caller decide what to do with it.
 
-LOAD: 3 drills, about 60 minutes (20 each). Each drill carries a CORE IDEA
-line - read it before you type, it is the one thought that unlocks the drill.
-If you are still stuck 5 minutes after reading it, ask.
+LOAD: 1 drill, 3 functions, about 20-25 minutes. Each function carries a CORE
+IDEA line - read it before you type, it is the one thought that unlocks the
+drill. If you are still stuck 5 minutes after reading it, ask.
 """
 
 
