@@ -40,13 +40,13 @@ At the end of each week, three questions — name files, not feelings.
 **Optimization:** drop `main(0)`'s counter for `while len(dates) < 2`, and make `parse_date` return a date instead of printing it.
 **Learned:** a date is a number in a costume — `d2 - d1` → `timedelta`, `.days` → `int`; the leap day is added at lookup (`+ (month > 2 and _is_leap(year))`), not stored. `if __name__ == "__main__":` is a launch switch — `__name__` is `"__main__"` only when the file runs directly.
 
-### Day 6 and Day 7 — 2026-11-12
+### Day 6 — 2026-11-12
 
 **Shipped:** polish on days 1–5 (typos, validation, re-ask on bad input) + reading 3 (Caesar cipher).
 **Bug:** `day02` called `grade(a)` with the raw string instead of `grade(score)` → `TypeError` on valid input only; `day05` kept `from datetime import datetime` but used `date.fromisoformat` → `NameError` on every input, which `except ValueError` does not catch.
 **Learned:** a validator is only as strict as the type it parses into — `datetime` accepts `2026-11-09 23:00`, `date` rejects it.
 
-### Week 1 review
+### Week 1 review   — 2026-11-13
 
 - **What shipped this week?** 5 programs — `day01_fizzbuzz.py`, `day02_grade_calculator.py`, `day03_temperature.py`, `day04_leap_year.py`, `day05_days_between.py` — plus 3 reading labs.
 - **What confused me most this week?** Day 5: `_days_before_month(month, year)` and the `+ (month > 2 and _is_leap(year))` line — a lot of new material (the `datetime` module, the module-level loop), and I had to read outside sources to see how a module works.
@@ -92,7 +92,7 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:**
 **Learned:**
 
-### Week 2 review — Sunday 22 Nov
+### Week 2 review —  22 Nov
 
 - **What shipped this week?** Name the files, not the feelings.
 - **What confused me most this week?** Name the line of code.
