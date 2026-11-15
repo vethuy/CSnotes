@@ -31,6 +31,14 @@ def second_largest(nums):
     second_largest([5, 5])       -> None
     second_largest([])           -> None
     """
+    if len(nums)<=2:
+        return None
+    else:
+        second=min(nums)
+        for i in nums:
+            if second<i<max(nums):
+                second=i
+        return second
     raise NotImplementedError("second_largest")
 
 
@@ -46,6 +54,13 @@ def rotate_left(nums, k):
     rotate_left([1, 2, 3, 4, 5], 2) -> [3, 4, 5, 1, 2]
     rotate_left([1, 2, 3, 4, 5], 7) -> [3, 4, 5, 1, 2]
     """
+    if k<0 or len(nums)==0:
+        return []
+    else:
+        move=k%len(nums)
+        result=nums[move:]+nums[:move]
+        return result
+
     raise NotImplementedError("rotate_left")
 
 
@@ -57,6 +72,16 @@ def remove_duplicates(nums):
     remove_duplicates([3, 1, 3, 2, 1]) -> [3, 1, 2]
     remove_duplicates([])              -> []
     """
+    if len(nums)==0 :
+        return[]
+    else:
+        result=[]
+        for i in nums:
+            if i not in result:
+                result.append(i) 
+            else:
+                continue
+        return result
     raise NotImplementedError("remove_duplicates")
 
 

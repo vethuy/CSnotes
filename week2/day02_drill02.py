@@ -32,6 +32,21 @@ def char_count(text):
     char_count("a a")  -> {"a": 2}
     char_count("")     -> {}
     """
+    if len(text)==0:
+        return {}
+    else:
+        ch={}
+        for i in range(len(text)):
+            if text[i] == " ":
+                continue
+            elif text[i] not in ch:
+                ch[text[i]]=1
+            else:
+                ch[text[i]]=ch.get(text[i],0)+1 
+        return ch
+        
+
+
     raise NotImplementedError("char_count")
 
 
@@ -49,6 +64,16 @@ def group_by_first_letter(words):
     group_by_first_letter(["bee", "ant", "apple"])
         -> {"b": ["bee"], "a": ["ant", "apple"]}
     """
+    if len(words)==0:
+        return {}
+    else:
+        group={}
+        for i in words:
+            firstletter=i[0]
+            if firstletter not in group:
+                group[firstletter]=[]
+            group[firstletter].append(i)
+        return group         
     raise NotImplementedError("group_by_first_letter")
 
 
@@ -65,6 +90,16 @@ def top_n(counts, n):
     top_n({"a": 1, "b": 1}, 2)         -> [("a", 1), ("b", 1)]
     top_n({"a": 1}, 0)                 -> []
     """
+    if n<=0 or len(counts)==0:
+        return []
+    else:
+          pairs = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+    return pairs[:n]
+    
+
+        
+
+
     raise NotImplementedError("top_n")
 
 

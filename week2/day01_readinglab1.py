@@ -39,18 +39,41 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write these four lines BEFORE running the file.
+def mean(nums):
+    """Return the arithmetic mean of nums. nums must be non-empty."""
+    total = 0
+    for n in nums:
+        total = total + n
+    return total / len(nums)
+1)mean([1, 2, 3, 4])=
+total=0  n=1   total = 0+1=1
+total=1  n=2   total = 1+2=3
+total=3  n=3   total = 3+3=6
+total=6  n=4   total = 6+4=10
+return total / len(nums)=10/4=2.5
+      
+2) mean([1, 2, 3])=
+total=0  n=1   total = 0+1=1
+total=1  n=2   total = 1+2=3
+total=3  n=3   total = 3+3=6
+return total / len(nums)=6/3=2
 
-1)
-2)
-3)
-4)
+3) mean([1, 2, 3]) == 2 =
+we know that 2)=2
+so it return True(boolean)
+
+4) try:mean([])
+nums is empty. so the error occur at for loop?
+no it may skip it.so the actual error is return
+return total / len(nums)=0/0 this is not acceptable
+so it raise ZeroDivisionError Exception
 
 ACTUAL - paste the four printed lines here, then compare.
 
-1)
-2)
-3)
-4)
-
+1) mean([1, 2, 3, 4]) = 2.5
+2) mean([1, 2, 3]) = 2.0
+3) mean([1, 2, 3]) == 2 = True
+4) mean([]) -> ZeroDivisionError
+all correct
 One sentence on the miss (if any):
 '''

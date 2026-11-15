@@ -5,7 +5,8 @@ Then exactly three parts: **result / learned / still confusing**. Twenty lines
 for the entry, no more — if it doesn't fit, the entry is copying the code back
 out instead of writing down the lesson.
 
-**Score so far:** Week 1 — 10/11 (Day 1 1/1 · Day 5 4/5 · Day 6 5/5)
+**Score so far:** Week 1 — 10/11 (Day 1 1/1 · Day 5 4/5 · Day 6 5/5) ·
+Week 2 — 8/8 (Day 1 4/4 · Day 2 4/4)
 
 ---
 
@@ -84,6 +85,36 @@ I thought my answers were wrong because they printed with quotes — that is
 Also, in question 5 I wrote `LOWER[-1 % 26]`; the real expression is
 `LOWER[(LOWER.index('a') + -1) % 26]`, and the `index('a')` term only vanished
 because `'a'` happens to be 0 — with `'b'` my version gives the wrong letter.
+
+---
+
+## Week02 Day01 — day01_readinglab1.py: `statistics.mean` — result **4/4**
+
+### 1. Result
+
+Predicted `2.5` · `2` · `True` · `ZeroDivisionError`; actual `2.5` · `2.0` · `True` ·
+`ZeroDivisionError`. Four values right, but call 2 printed **`2.0`**, not `2` — the
+number was right and the type was not, and `repr()` is the only reason I saw it.
+
+### 2. What I learned
+
+`total / len(nums)` is true division, so `6 / 3` is `2.0` even though nothing is
+fractional; `2.0 == 2` is still `True`, which is why prediction 3 was safe to make
+on a wrong type. The accumulator runs `0→1→3→6` line by line, and on `[]` it simply
+never runs — the crash is the division on the last line, so I was right to stop
+suspecting the `for`.
+
+### 3. Still confusing
+
+The lab's docstring says the stdlib `mean` "hands back an int when it can", but this
+file's `mean` never can: `/` always returns `float`. The real `statistics.mean([1, 2,
+3])` is `2` because it computes exactly, with `Fraction`, and only converts at the
+end. So prediction 2 was asking about the stdlib function while I was reading a
+float-returning copy — the lesson is `2.0` vs `2`, not `2.5`.
+
+---
+
+
 
 ---
 

@@ -7,46 +7,46 @@ At the end of each week, three questions — name files, not feelings.
 
 ---
 
-## Week 1 — 7–13 Nov 2026
+## Week 1 — 9–15 Nov 2026
 
-### Day 1 — 2026-11-07
+### Day 1 — completed at 2026-11-07
 
 **Shipped:** `week1/day01_fizzbuzz.py` + reading lab 1.
 **Bug:** traced `range(1, 6)` as ending at 6 — it is half-open (1–5); odd-sum is `(n+1)**2/4`, not `(1+n)*n/4`.
 **Learned:** `continue` skips the rest of one iteration, not the loop; a function should `return` and let the caller print.
 
-### Day 2 — 2026-11-08
+### Day 2 — completed at 2026-11-08
 
 **Shipped:** `week1/day02_grade_calculator.py`.
 **Bug:** the `elif` chain repeated conditions already ruled out; the `except` printed `score` before it existed → `UnboundLocalError` on `abc`.
 **Learned:** an `elif` already carries the negation of every branch above it; `except ValueError` catches only that class; return `None` for "no grade" — `'reject'` is a truthy string.
 
-### Day 3 — 2026-11-09
+### Day 3 — completed at 2026-11-09
 
 **Shipped:** `week1/day03_temperature.py`.
 **Bug:** `mode(user)` got the string `"1"` instead of `1` (`"1" == 1` is False) and the program exited silently; `check_float(c)`'s result was thrown away; a `None` from the error branch reached the arithmetic.
 **Learned:** `try` does not prevent the raise, it stops the raise ending the program — a failed `int()` aborts before assigning, so the name never exists.
 
-### Day 4 — 2026-11-10
+### Day 4 — completed at 2026-11-10
 
 **Shipped:** `week1/day04_leap_year.py`.
 **Bug:** `is_leap` returned the strings `'True'`/`'False'`; output looked identical, but `bool('False')` is `True`, so `if is_leap(1900):` took the wrong branch.
 **Learned:** a value's type is not its printout — check `type()`/`repr()`; `if X: return True / else: return False` is just `return X`; keep decide (`True`/`False`) separate from render (words).
 
-### Day 5 — 2026-11-11
+### Day 5 — completed at 2026-11-11
 
 **Shipped:** `week1/day05_days_between.py` + reading 2 (`_pydatetime.py`).
 **Bug:** none found that night.
 **Optimization:** drop `main(0)`'s counter for `while len(dates) < 2`, and make `parse_date` return a date instead of printing it.
 **Learned:** a date is a number in a costume — `d2 - d1` → `timedelta`, `.days` → `int`; the leap day is added at lookup (`+ (month > 2 and _is_leap(year))`), not stored. `if __name__ == "__main__":` is a launch switch — `__name__` is `"__main__"` only when the file runs directly.
 
-### Day 6 — 2026-11-12
+### Day 6 — completed at 2026-11-13
 
 **Shipped:** polish on days 1–5 (typos, validation, re-ask on bad input) + reading 3 (Caesar cipher).
 **Bug:** `day02` called `grade(a)` with the raw string instead of `grade(score)` → `TypeError` on valid input only; `day05` kept `from datetime import datetime` but used `date.fromisoformat` → `NameError` on every input, which `except ValueError` does not catch.
 **Learned:** a validator is only as strict as the type it parses into — `datetime` accepts `2026-11-09 23:00`, `date` rejects it.
 
-### Week 1 review   — 2026-11-13
+### Week 1 review   — completed at 2026-11-13
 
 - **What shipped this week?** 5 programs — `day01_fizzbuzz.py`, `day02_grade_calculator.py`, `day03_temperature.py`, `day04_leap_year.py`, `day05_days_between.py` — plus 3 reading labs.
 - **What confused me most this week?** Day 5: `_days_before_month(month, year)` and the `+ (month > 2 and _is_leap(year))` line — a lot of new material (the `datetime` module, the module-level loop), and I had to read outside sources to see how a module works.
@@ -56,17 +56,17 @@ At the end of each week, three questions — name files, not feelings.
 
 ## Week 2 — 16–22 Nov 2026
 
-### Day 1 — 16 Nov
+### Day 1 — completed at 2026-11-15
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day01_drill01.py` — `second_largest`, `rotate_left`, `remove_duplicates`, ends in `all drills pass` — plus `week2/day01_readinglab1.py` with `PREDICTION` and `ACTUAL` filled, 4/4.
+**Bug:** `second_largest` guards on `len(nums) <= 2` when the contract is *fewer than two distinct values*, so `[1, 2]` returns `None` (should be `1`) and `[9, 9, 9]` returns `9` (should be `None`) — both outside the check block, which is why it still printed `all drills pass`.
+**Learned:** the check block is a sample and the docstring is the spec — write the `[1, 2]` and `[9, 9, 9]` asserts yourself; a `raise NotImplementedError` left after a `return` can never run, so it is a comment pretending to be a guard.
 
-### Day 2 — 17 Nov
+### Day 2 — completed at 2026-11-1
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day02_drill02.py` — `char_count`, `group_by_first_letter`, `top_n`, ends in `all drills pass` — plus `week2/day02_readinglab2.py` read against `collections.Counter.most_common`.
+**Bug:** all three in `top_n`, and all the same species of bug: `counts.items` without `()` handed `sorted` a method object (`TypeError: 'builtin_function_or_method' object is not iterable`); `pair += (i, counts[i],)` flattened the pairs into `('a', 3, 'b', 1)` instead of `(('a', 3), ('b', 1))`; and `sorted(...)` was called but never assigned, so the function fell through to `raise NotImplementedError` — a value computed and thrown away.
+**Learned:** a key function is a *ruler*, not the output — `sorted` compares the rulers but returns the original items; `key=lambda x: (-x[1], x[0])` reads "count descending, word ascending" because the minus flips only the number and the tuple's second slot breaks the tie. `counts.items()` already builds by hand what the loop was rebuilding.
 
 ### Day 3 — 18 Nov
 
