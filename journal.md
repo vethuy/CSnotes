@@ -62,17 +62,17 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:** `second_largest` guards on `len(nums) <= 2` when the contract is *fewer than two distinct values*, so `[1, 2]` returns `None` (should be `1`) and `[9, 9, 9]` returns `9` (should be `None`) — both outside the check block, which is why it still printed `all drills pass`.
 **Learned:** the check block is a sample and the docstring is the spec — write the `[1, 2]` and `[9, 9, 9]` asserts yourself; a `raise NotImplementedError` left after a `return` can never run, so it is a comment pretending to be a guard.
 
-### Day 2 — completed at 2026-11-1
+### Day 2 — completed at 2026-11-16
 
-**Shipped:** `week2/day02_drill02.py` — `char_count`, `group_by_first_letter`, `top_n`, ends in `all drills pass` — plus `week2/day02_readinglab2.py` read against `collections.Counter.most_common`.
-**Bug:** all three in `top_n`, and all the same species of bug: `counts.items` without `()` handed `sorted` a method object (`TypeError: 'builtin_function_or_method' object is not iterable`); `pair += (i, counts[i],)` flattened the pairs into `('a', 3, 'b', 1)` instead of `(('a', 3), ('b', 1))`; and `sorted(...)` was called but never assigned, so the function fell through to `raise NotImplementedError` — a value computed and thrown away.
-**Learned:** a key function is a *ruler*, not the output — `sorted` compares the rulers but returns the original items; `key=lambda x: (-x[1], x[0])` reads "count descending, word ascending" because the minus flips only the number and the tuple's second slot breaks the tie. `counts.items()` already builds by hand what the loop was rebuilding.
+**Shipped:** `week2/day02_drill02.py` — `char_count`, `group_by_first_letter`, `top_n`, ends in `all drills pass` — plus `week2/day02_readinglab2.py` against `collections.Counter.most_common`, 2/4.
+**Bug:** three in `top_n`: `counts.items` without `()` sorted a method object (`TypeError: 'builtin_function_or_method' object is not iterable`); `pair += (i, counts[i],)` flattened the pairs into `('a', 3, 'b', 1)` instead of `(('a', 3), ('b', 1))`; and `sorted(...)` was never assigned, so the function fell through to `raise NotImplementedError` — a value computed and thrown away. Lab: predicted that `reverse=True` would reverse the ties and that `get('z', 0)` would answer `None`; both wrong.
+**Learned:** a key function is a *ruler*, not the output — `sorted` compares the rulers but returns the original items; `key=lambda x: (-x[1], x[0])` reads "count descending, word ascending" because the minus flips only the number and the tuple's second slot breaks the tie. `reverse=True` flips the comparison, not the finished list: equal keys are never compared, so stability keeps their arrival order (`{"c": 1, "a": 2, "b": 2}` → `a, b`) — which is why `most_common` cannot alphabetise a tie and `top_n` had to. `get(k, default)` returns the default and never writes to the dict.
 
-### Day 3 — 18 Nov
+### Day 3 — completed at 2026-11-16
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day03_drill03.py` — `unique_words`, `common_words`, `dedupe_keep_order`, ends in `all drills pass` — plus `week2/day03_readinglab3.py`, 3/4.
+**Bug:** `set={}` was an empty **dict**, so `.add` died with `AttributeError: 'dict' object has no attribute 'add'`; then `set.add('word')` called the method on the built-in type and passed the literal string, giving `TypeError: descriptor 'add' for 'set' objects doesn't apply to a 'str' object`.
+**Learned:** `{}` is a dict and Python has no empty-set literal, so a set starts life as `set()`; a set operator hands back a set, and `sorted()` is the only step that turns it into the ordered list the contract asks for.
 
 ### Day 4 — 19 Nov
 

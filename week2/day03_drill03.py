@@ -25,6 +25,18 @@ PUNCTUATION = ".,!?;:\"'"
 # "which different things are in here?". Build it with a comprehension and
 # let the set do the de-duplicating you were writing by hand in week 1.
 def unique_words(text):
+    if text == " ":
+        return set()
+    else:
+        target=set()
+        string=(text.lower()).split()
+        for i in string:
+            word= i.strip(".,!?;:\"'")
+            target.add(word)
+            
+    return target
+            
+
     """Return the set of distinct words in text.
 
     Lowercase the text, strip PUNCTUATION from both ends of each word, and
@@ -41,6 +53,9 @@ def unique_words(text):
 # already means "both", so there is no loop left to write - only the sort,
 # because a set's order is not yours to choose.
 def common_words(a, b):
+    wordlist=a&b
+    result=sorted(wordlist)
+    return result
     """Return a sorted list of the words that are in both a and b.
 
     a and b are sets of words. Return [] when either is empty.
@@ -56,6 +71,14 @@ def common_words(a, b):
 # the answer, one set for "already answered". The set is a notebook, not the
 # output - so the output keeps its order.
 def dedupe_keep_order(nums):
+    if len(nums)==0:
+        return []
+    else:
+        result=[]
+        for i in nums:
+            if i not in result:
+                result.append(i)
+        return result
     """Return a new list, duplicates removed, first-seen order kept.
 
     nums must not be modified.
@@ -71,6 +94,7 @@ def dedupe_keep_order(nums):
 # --------------------------------------------------------------------------
 if __name__ == "__main__":
     # unique_words
+
     assert unique_words("The cat, the dog!") == {"the", "cat", "dog"}
     assert isinstance(unique_words("x"), set), "must return a set, not a list"
     assert unique_words("a a A") == {"a"}

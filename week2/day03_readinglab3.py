@@ -36,17 +36,28 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1)
-2)
-3)
-4)
+1)overlap({1, 2, 3}, {2, 3, 4}) =
+overlap return the items that are in both sets
+both have 2 and 3 so return {2,3}
+
+2)sorted(only_in({'a', 'b'}, {'b'})) =
+only_in Return the items of a that are not in b
+'a' only appear in a not in b
+sorted turn it to list  answer is ['a']
+
+3)list(set([3, 1, 2, 1])) = set()? oh i check set(a) will turn a to set
+so it become {3, 1, 2, 1} then list() turn it to [3, 1, 2, 1]
+
+4)len({'a', 'a', 'b'})a length of set? oh i check W3school it filted repeat element
+so ans is 2
 
 ACTUAL
 
-1)
-2)
-3)
-4)
+1) overlap({1, 2, 3}, {2, 3, 4}) = {2, 3}
+2) sorted(only_in({'a', 'b'}, {'b'})) = ['a']
+3) list(set([3, 1, 2, 1])) = [1, 2, 3]
+4) len({'a', 'a', 'b'}) = 2
+the third one wrong 3/4 what step filted repeat element?
 
 One sentence on the miss (if any):
 '''

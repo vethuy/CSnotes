@@ -34,18 +34,29 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write before running.
+First analyse the code
+pairs=sorted(counts.items(), key=lambda kv: kv[1], reverse=True)
+sorted counts all item  key is the dict value   then reverse
+n=None return all .  else return pairs[:n]
+1)most_common(counts) =
+counts = {"a": 2, "b": 2, "c": 1} sort it by the value then reverse
+n=None return all.so we get[("a": 2), ("b": 2), ("c": 1)] 
 
-1)
-2)
-3)
-4)
+2)most_common(other, 2) =same step .so we can get sorted it{"c": 1, "a": 2, "b": 2}
+then reverse {"b": 2, "a": 2, "c": 1}  n=2 mean return pairs[:2]
+so return [("b": 2), ("a": 2)]
+
+3)most_common(counts, 0) wait n=0? return pairs[:0]? so it return []
+
+4)counts.get('z', 0) ='z'?  counts dict has no 'z' so there no value in it
+so it return None
 
 ACTUAL
 
-1)
-2)
-3)
-4)
-
+1) most_common(counts) = [('a', 2), ('b', 2), ('c', 1)]
+2) most_common(other, 2) = [('a', 2), ('b', 2)]
+3) most_common(counts, 0) = []
+4) counts.get('z', 0) = 0
+2/4 diffcult one
 One sentence on the miss (if any):
 '''

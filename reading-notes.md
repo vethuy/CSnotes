@@ -6,7 +6,7 @@ for the entry, no more — if it doesn't fit, the entry is copying the code back
 out instead of writing down the lesson.
 
 **Score so far:** Week 1 — 10/11 (Day 1 1/1 · Day 5 4/5 · Day 6 5/5) ·
-Week 2 — 8/8 (Day 1 4/4 · Day 2 4/4)
+Week 2 — 9/12 (Day 1 4/4 · Day 2 2/4 · Day 3 3/4)
 
 ---
 
@@ -114,7 +114,55 @@ float-returning copy — the lesson is `2.0` vs `2`, not `2.5`.
 
 ---
 
+## Week02 Day02 — drill02.py + readinglab2.py: `sorted`, keys, ties — result **2/4**
 
+### 1. Result
+
+Lab: predicted `[('a', 2), ('b', 2), ('c', 1)]` · `[('b', 2), ('a', 2)]` · `[]` ·
+`None`; actual same · **`[('a', 2), ('b', 2)]`** · same · **`0`**. Two right, and
+both misses were about behaviour, not arithmetic. Drill: `all drills pass`, but only
+after `top_n` was rebuilt three times.
+
+### 2. What I learned
+
+A key is a *ruler*: `sorted` compares what the key returns but hands back the
+original items. `key=lambda x: (-x[1], x[0])` reads "count descending, word
+ascending" because the minus flips only the number and the tuple's second slot breaks
+ties. `reverse=True` is not "reverse the list afterwards" — equal keys are never
+compared, so stability keeps their arrival order: `other` inserts `c, a, b`, so its
+two `2`s come out `a, b`. That is why `most_common` cannot alphabetise a tie and
+`top_n` had to. `counts.items()` is the pairs my loop was rebuilding by hand, and
+`dict.get(k, 0)` returns the default `0`, not `None`.
+
+### 3. Still confusing
+
+I reversed ties mentally, and read `get`'s missing key as `None` though I had passed
+`0`. In the drill: `counts.items` without `()` sorts a method object
+(`TypeError: 'builtin_function_or_method' object is not iterable`), `pair += (i,
+counts[i],)` flattens the pairs, and a `sorted(...)` that is not assigned computes a
+value nobody keeps — the function then fell through to its `raise`.
+
+---
+
+## Week02 Day03 — day03_readinglab3.py: set algebra, hash order — result **3/4**
+
+### 1. Result
+
+Predicted `{2, 3}` · `['a']` · `[3, 1, 2, 1]` · `2`; actual `{2, 3}` · `['a']` ·
+`[1, 2, 3]` · `2`. Three right; call 3 missed on the dedupe and on the order.
+
+### 2. What I learned
+
+`set([3, 1, 2, 1])` removes the duplicate *at construction* — `list()` only wraps
+what is already there, it never filters. The `[1, 2, 3]` order is hash-table order,
+not sorting: small ints hash to themselves and only *look* ordered, so
+`sorted(set(...))` is the one version that prints the same thing every run.
+
+### 3. Still confusing
+
+I read `set(x)` as "change the type of x" and expected the list to come through
+unchanged. What call 4 proved is that `{'a', 'a', 'b'}` is already two elements
+before `len` ever sees it — the literal is where the collapse happens.
 
 ---
 
