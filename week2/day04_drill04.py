@@ -24,43 +24,100 @@ need to clean anything up.
 # that have something in them. Decide what an empty line means before you
 # write the loop, and you will not need two passes over the file.
 def count_lines(path):
+    with open(path)as f:
+        content=f.read()
+        if content == '':
+            return 0
+        else:
+            count=0
+            result=content.split('\n')
+            for i in result:
+                word=i.strip()
+                if  word!='':
+                    count+=1  
+        return count
+
+
+
     """Return how many lines in the file have visible text.
 
     A line that is empty or only whitespace does not count.
     path may be a str or a pathlib.Path.
 
     count_lines("one.txt") -> 3   # for a file with 5 lines, 2 of them blank
-    """
     raise NotImplementedError("count_lines")
+    """
+    
 
 
 # CORE IDEA: "the longest" needs a memory, and the memory starts empty. Keep
 # the best line you have seen so far and replace it only when the new line is
 # strictly longer - "strictly" is what keeps the first one on a tie.
 def longest_line(path):
+    with open(path)as f:
+        content=f.read()
+        if content == '':
+            return ""
+        else:
+            best=''
+            result=content.split('\n')
+            for i in result:
+               line=i.strip()
+               if len(best)<len(line):
+                    best=i.strip()
+    return best               
+                        
+
+
+
     """Return the longest line with surrounding whitespace stripped.
 
     Return "" when the file has no non-blank line. On a tie return the line
     that appears first.
 
     longest_line("one.txt") -> "second line"
-    """
     raise NotImplementedError("longest_line")
+    """
+    
 
 
 # CORE IDEA: a reader has two kinds of line: data and commentary. Skipping
 # is a filter, and converting is a second step - keep them apart and the
 # failure tells you which line was wrong.
 def read_numbers(path):
-    """Return a list of floats read from the file.
+    with open(path)as f:
+        content=f.read()
+        if content == '':
+            return []
+        else:
+            number=[]
+            result=(content.split('\n'))
+            for i in result:
+                line=i.strip()
+                if line != '' and line[0]!='#':
+                    try:
+                        num=float(line)
+                    except ValueError as a:
+                        raise ValueError (f'({line} is', a)
+                    else:
+                        number.append(num)
+        return number                     
+                
+            
+
+
+            
+    """
+    Return a list of floats read from the file.
 
     Skip blank lines, and skip lines whose first non-space character is "#".
     A line that is not a number raises ValueError whose message contains the
     offending text.
 
     read_numbers("nums.txt") -> [1.5, 2.0, 3.25]
-    """
     raise NotImplementedError("read_numbers")
+    """
+    
 
 
 # --------------------------------------------------------------------------

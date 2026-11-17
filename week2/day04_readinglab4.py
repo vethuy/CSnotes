@@ -38,18 +38,26 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write before running.
+First analyse  rows = read_rows(DATA)
+return list(csv.DictReader(text.splitlines())) First  text.splitlines()-->DATA.splitlines()
+so now become ['name,age','ann,30','bob','cat,25,extra'] then csv.DictReader it
+but a dict have bob only and extra? let guess  {'name':'age','ann':30,'cat':25} bob and extra got exclude?
+after list it become [('name','age'),('ann',30),('cat',25)]
+so answer the question now
+1) len(rows) =3
 
-1)
-2)
-3)
-4)
+2)rows[1] = ('ann',30)
+
+3)rows[2] =('cat',25)
+
+4) rows[2]['age'] == 25 =True
 
 ACTUAL
 
-1)
-2)
-3)
-4)
-
-One sentence on the miss (if any):
+1) len(rows) = 3
+2) rows[1] = {'name': 'bob', 'age': None}
+3) rows[2] = {'name': 'cat', 'age': '25', None: ['extra']}
+4) rows[2]['age'] == 25 = False
+1/4 the first analyse is wrong
+One sentence on the miss (if any):I read the call as csv.reader and predicted cell-tuples of ints; it is DictReader, so the rows are dicts of strings.
 '''

@@ -74,11 +74,11 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:** `set={}` was an empty **dict**, so `.add` died with `AttributeError: 'dict' object has no attribute 'add'`; then `set.add('word')` called the method on the built-in type and passed the literal string, giving `TypeError: descriptor 'add' for 'set' objects doesn't apply to a 'str' object`.
 **Learned:** `{}` is a dict and Python has no empty-set literal, so a set starts life as `set()`; a set operator hands back a set, and `sorted()` is the only step that turns it into the ordered list the contract asks for.
 
-### Day 4 — 19 Nov
+### Day 4 — completed at 2026-11-17
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day04_drill04.py` — `count_lines`, `longest_line`, `read_numbers`, ends in `all drills pass` — plus `week2/day04_readinglab4.py` with `PREDICTION` and `ACTUAL` filled, 1/4.
+**Bug:** `float = []` shadowed the builtin, so `float(line)` died with `TypeError: 'list' object is not callable`; `if line != '' or line[0] != '#'` used `or` where `and` was meant and indexed `''` → `IndexError: string index out of range`; `longest_line` interleaved each word with its length, so `max(['second line', 11, …])` raised `TypeError: '>' not supported between instances of 'int' and 'str'`; and `raise NotImplementedError` had drifted to module level, killing the file with `NotImplementedError: read_numbers` on import.
+**Learned:** never name a variable after a function you still have to call (`float`, `str`, `list`) — the local wins for the whole function, even on lines above the assignment. Filter before you convert: strip, test blank, test `#`, then `float(line)` inside a `try`, and raise `ValueError` naming the line. Keep one memory (`best`) instead of a parallel list of words and lengths. And a docstring written *after* its body is not a docstring — `__doc__` stays `None` and anything below the body can never run.
 
 ### Day 5 — 20 Nov
 

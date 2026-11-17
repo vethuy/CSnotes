@@ -6,7 +6,7 @@ for the entry, no more — if it doesn't fit, the entry is copying the code back
 out instead of writing down the lesson.
 
 **Score so far:** Week 1 — 10/11 (Day 1 1/1 · Day 5 4/5 · Day 6 5/5) ·
-Week 2 — 9/12 (Day 1 4/4 · Day 2 2/4 · Day 3 3/4)
+Week 2 — 10/16 (Day 1 4/4 · Day 2 2/4 · Day 3 3/4 · Day 4 1/4)
 
 ---
 
@@ -163,6 +163,34 @@ not sorting: small ints hash to themselves and only *look* ordered, so
 I read `set(x)` as "change the type of x" and expected the list to come through
 unchanged. What call 4 proved is that `{'a', 'a', 'b'}` is already two elements
 before `len` ever sees it — the literal is where the collapse happens.
+
+---
+
+## Week02 Day04 — day04_readinglab4.py: `csv.DictReader`, `restkey`/`restval` — result **1/4**
+
+### 1. Result
+
+Predicted `3` · `('ann', 30)` · `('cat', 25)` · `True`; actual `3` ·
+`{'name': 'bob', 'age': None}` · `{'name': 'cat', 'age': '25', None: ['extra']}` ·
+`False`. One right, and it was luck: I drew the row shape from `csv.reader`
+while the lab calls `DictReader`, so I counted the header as a row and dropped
+`bob` — wrong three rows, right count.
+
+### 2. What I learned
+
+`DictReader` gives a **dict per row keyed by the header**, not a tuple of cells;
+the header becomes `fieldnames` (`csv.py:161-168`) and is never data, and
+`dict(zip(fieldnames, row))` at `csv.py:186` pairs by *position* — swap the
+header to `age,name` and the first cell becomes `age`. A short row keeps its key
+and fills it with `restval` (`None`); a long row is not re-slotted, the surplus
+becomes a list under `restkey` (also `None`). Cells are text, so `'25'` is a
+`str` and `== 25` is `False`.
+
+### 3. Still confusing
+
+`list(...)` at `:28` made me read the result as a list of cell-pairs; `list()`
+only wraps the outer container — the shelf is a list, the items are dicts — the
+same trap as Day 3, where `list(set(...))` did not dedupe.
 
 ---
 
