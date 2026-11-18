@@ -39,19 +39,31 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1)
-2)
-3)
-4)
-5)
+1)load('[1, 2]') = "[1,2]"-->[1,2]
+
+2)load('null') = "null" --> None
+
+3) load('') = ""-->''
+
+4)load('{\"a\": 1,}') = a comma cause json.JSONDecodeError
+oh wait the input is '{"a": 1,}' 'is not allowed in json
+so return 'bad at line 1, column 1'
+
+5)issubclass(json.JSONDecodeError, ValueError) = the hardest one.i need to figure out what issubclass do
+oh i got the idea. so is json.JSONDecodeError is a Valurerror?
+lets check Valueerror catch what error
+two defintion Valueerror in json: ValueError occurs when the JSON data contains a value that is not of the expected data type
+json.JSONDecodeError :JSONDecodeError is an error that occurs when the JSON data is invalid
+i think yes beacuse the data is invalid is a part of Valueerror
+so return True
 
 ACTUAL
 
-1)
-2)
-3)
-4)
-5)
-
+1) load('[1, 2]') = [1, 2]
+2) load('null') = None
+3) load('') = 'bad at line 1, column 1'
+4) load('{"a": 1,}') = 'bad at line 1, column 8'
+5) issubclass(json.JSONDecodeError, ValueError) = True
+3/5 not bad but a little bit confuse
 One sentence on the miss (if any):
 '''

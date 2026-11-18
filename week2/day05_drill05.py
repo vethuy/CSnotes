@@ -23,8 +23,7 @@ Ask.
 # CORE IDEA: a bare `except:` also catches Ctrl-C, SystemExit and the typo
 # in your own next line. Catch what you can name - ValueError is "the text
 # is not a number" - and let everything else be a real crash.
-def safe_int(text, default=None):
-    """Return text as an int, or default when that is impossible.
+"""Return text as an int, or default when that is impossible.
 
     Never raises. A non-string (None, a list) is also "impossible".
     " 42 " -> 42 because int() ignores surrounding spaces.
@@ -33,15 +32,24 @@ def safe_int(text, default=None):
     safe_int("4.2")     -> None
     safe_int("x", 0)    -> 0
     safe_int(None)      -> None
-    """
     raise NotImplementedError("safe_int")
-
+    
+    """
+   
+def safe_int(text, default=None):
+    if text is None or type(text)==list:
+        return default
+    else:
+        try:
+            a=int(text)
+        except ValueError:
+            return default
+        return a
 
 # CORE IDEA: the message is the API. "could not convert string to float:
 # '12,50'" is what a stranger needs to fix the file, and it is why you raise
 # instead of returning 0.0 - 0.0 is a wrong answer, an exception is a signal.
-def parse_amount(text):
-    """Return text as a float. Raise ValueError for anything unparseable.
+"""Return text as a float. Raise ValueError for anything unparseable.
 
     The ValueError message must contain repr(text), so the caller knows
     which value broke.
@@ -49,15 +57,21 @@ def parse_amount(text):
 
     parse_amount("12.50") -> 12.5
     parse_amount(" 3 ")   -> 3.0
-    """
     raise NotImplementedError("parse_amount")
-
-
+    """
+def parse_amount(text):
+    try:
+        a=float(text)
+    except ValueError:
+        raise ValueError(f'{text!r},is not a valid')
+    return a
+  
+   
 # CORE IDEA: one bad token should not destroy the other nine. Collect the
 # failures in a list, keep the sum of what worked, and let main() decide
 # whether to warn, stop, or ignore - the function only reports.
-def tally(text):
-    """Return (total, bad_tokens) for a comma-separated string of amounts.
+    """
+ Return (total, bad_tokens) for a comma-separated string of amounts.
 
     Split on ",", strip each token, skip empty tokens. Good tokens are added
     to total; bad ones go into the list as the stripped text, in order.
@@ -66,9 +80,22 @@ def tally(text):
     tally("1.25, x, 2.5")  -> (3.75, ["x"])
     tally("")              -> (0.0, [])
     tally(" , ")           -> (0.0, [])
-    """
     raise NotImplementedError("tally")
-
+    """
+def tally(text):
+    valid=0.0
+    bad=[]
+    token=text.split(',')
+    for i in token:
+        if i.strip() =="":
+            continue
+        try:
+                good=float(i)
+                valid+=good
+        except ValueError:
+                bad.append(i.strip())
+    return (valid,bad)
+  
 
 # --------------------------------------------------------------------------
 # CHECKS - do not edit below this line

@@ -80,11 +80,11 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:** `float = []` shadowed the builtin, so `float(line)` died with `TypeError: 'list' object is not callable`; `if line != '' or line[0] != '#'` used `or` where `and` was meant and indexed `''` → `IndexError: string index out of range`; `longest_line` interleaved each word with its length, so `max(['second line', 11, …])` raised `TypeError: '>' not supported between instances of 'int' and 'str'`; and `raise NotImplementedError` had drifted to module level, killing the file with `NotImplementedError: read_numbers` on import.
 **Learned:** never name a variable after a function you still have to call (`float`, `str`, `list`) — the local wins for the whole function, even on lines above the assignment. Filter before you convert: strip, test blank, test `#`, then `float(line)` inside a `try`, and raise `ValueError` naming the line. Keep one memory (`best`) instead of a parallel list of words and lengths. And a docstring written *after* its body is not a docstring — `__doc__` stays `None` and anything below the body can never run.
 
-### Day 5 — 20 Nov
+### Day 5 — completed at 2026-11-18
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day05_drill05.py` — `safe_int`, `parse_amount`, `tally`, ends in `all drills pass` — plus `week2/day05_readinglab5.py` with `PREDICTION` and `ACTUAL` filled, 3/5.
+**Bug:** `raise a` tried to raise the float and died with `TypeError: exceptions must derive from BaseException`; the rewritten `except` then built its message out of `a`, which the failed `float(text)` never assigned → `UnboundLocalError: cannot access local variable 'a' where it is not associated with a value`; and `if i.strip == "":` compared the method object, so the skip never fired and `tally("")` returned `(0, [''])`.
+**Learned:** `raise` wants an exception object built from names that exist on the failing path — `text`, not the result of the conversion that just failed; and `s.strip` is the method while `s.strip()` is its result, so a missing `()` is a comparison that is always false and never raises.
 
 ### Day 6 — 21 Nov (project)
 

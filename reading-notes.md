@@ -6,7 +6,7 @@ for the entry, no more — if it doesn't fit, the entry is copying the code back
 out instead of writing down the lesson.
 
 **Score so far:** Week 1 — 10/11 (Day 1 1/1 · Day 5 4/5 · Day 6 5/5) ·
-Week 2 — 10/16 (Day 1 4/4 · Day 2 2/4 · Day 3 3/4 · Day 4 1/4)
+Week 2 — 13/21 (Day 1 4/4 · Day 2 2/4 · Day 3 3/4 · Day 4 1/4 · Day 5 3/5)
 
 ---
 
@@ -191,6 +191,33 @@ becomes a list under `restkey` (also `None`). Cells are text, so `'25'` is a
 `list(...)` at `:28` made me read the result as a list of cell-pairs; `list()`
 only wraps the outer container — the shelf is a list, the items are dicts — the
 same trap as Day 3, where `list(set(...))` did not dedupe.
+
+---
+
+## Week02 Day05 — day05_readinglab5.py: `json.loads`, `JSONDecodeError` — result **3/5**
+
+### 1. Result
+
+Predicted `[1, 2]` · `None` · `''` · `'bad at line 1, column 1'` · `True`;
+actual `[1, 2]` · `None` · `'bad at line 1, column 1'` · `'bad at line 1, column 8'` ·
+`True`. Three right: the two misses were about the *message* `load` returns —
+I echoed the input back for `''`, and stopped counting at column 1 for the
+trailing comma.
+
+### 2. What I learned
+
+`class JSONDecodeError(ValueError)` — the inheritance is declared in
+`json/decoder.py:353`, so `except ValueError` already catches malformed JSON and
+my `tally`/`parse_amount` style needs no `json` import to handle it. `lineno`
+and `colno` are **1-based** and point at the character where parsing broke: in
+`{"a": 1,}` the comma sits at position 8, so the answer was column 8, not the
+start of the line.
+
+### 3. Still confusing
+
+The quotes around `'bad at line 1, column 1'` in the output come from `repr()`
+in the lab's `print`, not from the string (23 characters, not 25) — and the empty
+input reports `column 1` with `char 0`, so the two counters disagree by one.
 
 ---
 
