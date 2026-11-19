@@ -34,12 +34,24 @@ import sys
 from pathlib import Path
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "day06_todos.json"
-
+'''
+check python week2/day06_todo.py --check
+'''
 
 # --------------------------------------------------------------------------
 # 1. disk
 # --------------------------------------------------------------------------
 def load(path):
+    try:
+        with open(path,'r',encoding="utf-8") as file:
+            data=json.load(file)
+    except FileNotFoundError:
+        return []
+        '''
+        raise FileNotFoundError('No such file or directory:',path)
+    '''
+    return data 
+    
     """Return the list of task dicts stored at path.
 
     Missing file      -> []          (first run is not an error)
@@ -49,6 +61,11 @@ def load(path):
 
 
 def save(path, items):
+    path.parent.mkdir(parents=True,exist_ok=True)
+    with open (path,'w',encoding="utf-8") as file:
+        json.dump(items, file, indent=2)
+    return
+
     """Write items to path as JSON.
 
     - indent=2 so the file is readable and diff-friendly
@@ -63,6 +80,18 @@ def save(path, items):
 # 2. the list of dicts
 # --------------------------------------------------------------------------
 def add(items, text):
+    task={}
+    if items==[]:
+        task['id']=1
+    else:
+        num=[]
+        for i in items:
+            task_id=i['id']
+            num.append(task_id)
+        task['id']=max(num)+1
+    task['text']=text
+    task['done']=False
+    return items+[task]
     """Return a NEW list with one more task.
 
     New task: {"id": max existing id + 1 (0 if empty), "text": text,
@@ -72,6 +101,18 @@ def add(items, text):
 
 
 def complete(items, n):
+    new=[]
+    idcheck=[]
+    for i in items:
+        task_id=i['id']
+        idcheck.append(task_id)
+        if task_id==n:
+                new.append({**i, "done": True})
+        else:
+             new.append(i)
+    if n not in idcheck:
+        raise ValueError(f"No task with id {n}")
+    return new
     """Return a NEW list where the task with id n has done=True.
 
     Unknown n -> raise ValueError("No task with id 99")   (f-string it)
@@ -80,6 +121,18 @@ def complete(items, n):
 
 
 def remove(items, n):
+    new=[]
+    idcheck=[]
+    for i in items:
+        task_id=i['id']
+        idcheck.append(task_id)
+        if task_id==n:
+            continue
+        else:
+            new.append(i)
+    if n not in idcheck:
+         raise ValueError(f"No task with id {n}")     
+    return new
     """Return a NEW list without the task whose id is n.
 
     Unknown n -> raise ValueError with the number in the message.
@@ -91,6 +144,16 @@ def remove(items, n):
 # 3. text out
 # --------------------------------------------------------------------------
 def render(items):
+    if items == []:
+        return "No tasks yet."
+    else:
+        lines=[]
+        for i in items:
+            if i['done'] is True:
+                lines.append (f'[{'x'}] {i['id']}. {i['text']}')
+            else:
+                lines.append(f'[{' '}] {i['id']}. {i['text']}')       
+    return "\n".join(lines)
     """Return the whole list as one string.
 
     []            -> "No tasks yet."
