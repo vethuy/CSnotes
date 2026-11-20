@@ -86,11 +86,11 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:** `raise a` tried to raise the float and died with `TypeError: exceptions must derive from BaseException`; the rewritten `except` then built its message out of `a`, which the failed `float(text)` never assigned → `UnboundLocalError: cannot access local variable 'a' where it is not associated with a value`; and `if i.strip == "":` compared the method object, so the skip never fired and `tally("")` returned `(0, [''])`.
 **Learned:** `raise` wants an exception object built from names that exist on the failing path — `text`, not the result of the conversion that just failed; and `s.strip` is the method while `s.strip()` is its result, so a missing `()` is a comparison that is always false and never raises.
 
-### Day 6 — 21 Nov (project)
+### Day 6 — completed at 2026-11-20
 
-**Shipped:**
-**Bug:**
-**Learned:**
+**Shipped:** `week2/day06_todo.py` — `load`, `save`, `add`, `complete`, `remove`, `render` and a `main(argv)` that answers `list`, `add`, `done`, `remove`, with `--path` for the checks; `python week2/day06_todo.py --check` ends in `all project checks pass`.
+**Bug:** `main` first called `complete(argv)` with the whole argument list, not the id alone (`TypeError: complete() missing 1 required positional argument: 'n'`), then passed the id on as the string `"1"` while `complete` compares it to an `int` — `1 == "1"` is `False`, so a task that existed answered `No task with id 1`; the check never saw it because the only id it tries, `99`, does not exist either.
+**Learned:** the check block is a sample and the docstring is the spec — the `try/except ValueError` wall is what turns a `raise` into `print(str(exc)); return 1` instead of a traceback, and an argument parsed twice is an argument parsed wrong once.
 
 ### Week 2 review —  22 Nov
 

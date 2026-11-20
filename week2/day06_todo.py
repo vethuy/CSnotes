@@ -34,9 +34,7 @@ import sys
 from pathlib import Path
 
 DATA_PATH = Path(__file__).resolve().parent / "data" / "day06_todos.json"
-'''
-check python week2/day06_todo.py --check
-'''
+
 
 # --------------------------------------------------------------------------
 # 1. disk
@@ -167,6 +165,32 @@ def render(items):
 # 4. the front door
 # --------------------------------------------------------------------------
 def main(argv):
+    try:
+        path=argv[argv.index("--path")+1]
+    except:
+        return 1
+
+    if argv[0]=='list':
+        print(render(load(path)))
+        return 0
+    if argv[0]=='add':
+        save(path,add(load(path),argv[argv.index('add')+1]))
+        return 0
+    if argv[0]=='done':
+        try:
+            save(path,complete(load(path),int(argv[argv.index('done')+1])))
+        except ValueError:
+            print('No task with id',int(argv[argv.index('done')+1]))
+            return 1
+        return 0
+    if argv[0]=='remove':
+        save(path,remove(load(path),int(argv[argv.index('remove')+1])))
+        return 0
+    else:
+        print("Unknown command: <cmd>" )
+        return 1
+    
+   
     """Run one command from the command line and return an exit code.
 
     argv is sys.argv[1:], e.g. ["add", "buy milk"] or ["done", "1"].
@@ -183,7 +207,7 @@ def main(argv):
     sys.exit - the last two lines of this file do that.
     """
     raise NotImplementedError("main")
-
+    '''python week2/day06_todo.py --check'''
 
 # --------------------------------------------------------------------------
 # CHECKS - do not edit below this line
