@@ -92,6 +92,12 @@ At the end of each week, three questions — name files, not feelings.
 **Bug:** `main` first called `complete(argv)` with the whole argument list, not the id alone (`TypeError: complete() missing 1 required positional argument: 'n'`), then passed the id on as the string `"1"` while `complete` compares it to an `int` — `1 == "1"` is `False`, so a task that existed answered `No task with id 1`; the check never saw it because the only id it tries, `99`, does not exist either.
 **Learned:** the check block is a sample and the docstring is the spec — the `try/except ValueError` wall is what turns a `raise` into `print(str(exc)); return 1` instead of a traceback, and an argument parsed twice is an argument parsed wrong once.
 
+### Week 2 practice — completed at 2026-11-21
+
+**Shipped:** `week2/Week2_practice.py` — `compress_runs`, `group_by_length`, `missing_from`, `word_counts`, `parse_config`; the 25 asserts in the check block were verified one at a time.
+**Bug:** every docstring was written *under* its body, so all five `__doc__` were `None` and the five `raise NotImplementedError` lines after the body could never run; `missing_from` returned `sorted(...)`, so `(["c", "a"], [])` gave `['a', 'c']` where the contract asks for first's order — the check block only ever feeds it alphabetical input.
+**Learned:** the docstring is the spec and the check block is a sample: the docstring goes directly under `def`, and a function whose answer is "in this order" must build that order, because `sorted` answers a different question — and no assertion in the sample caught it.
+
 ### Week 2 review —  22 Nov
 
 - **What shipped this week?** Name the files, not the feelings.

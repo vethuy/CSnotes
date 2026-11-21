@@ -31,6 +31,23 @@ line - read it before you type. Stuck 5 minutes after reading it? Ask.
 # runs of one, not one run of two. The item and its count travel together as a
 # tuple, so the answer is a list of (item, count) pairs.
 def compress_runs(items):
+    if items==[]:
+        return []
+    else:
+        result=[]
+        cur=items[0]
+        count=0
+        for i in items:
+            if cur==i:
+                count+=1
+            else:
+                result.append((cur,count))
+                cur=i
+                count=1
+            
+    result.append((cur,count))           
+    return result  
+
     """Return [(item, count), ...] collapsing runs of equal neighbours.
 
     Order is preserved and only NEIGHBOURS merge: "a a b a" has three runs.
@@ -49,6 +66,22 @@ def compress_runs(items):
 # strings themselves here - there is no key function to write - and Python
 # compares them by character code, so "B" comes before "a".
 def group_by_length(words):
+    if words==[]:
+        return {}
+    else:
+        result={}
+        word=sorted(words)
+        for i in word:
+            if len(i) not in result:
+                result[len(i)]=[]
+            result[len(i)].append(i)
+            
+        return result
+
+            
+        
+            
+
     """Return {length: [word, ...]} with every group sorted alphabetically.
 
     Case is kept as given. Duplicate words stay - each group is a list, not a
@@ -66,6 +99,9 @@ def group_by_length(words):
 # list for the answer - and the "seen" set is also what stops a duplicate
 # appearing twice.
 def missing_from(first, second):
+    keep=set(first)
+    throw=set(second)
+    return sorted(keep - throw)
     """Return the items of first that are not in second, in first's order.
 
     Each item appears at most once, at the position of its FIRST occurrence in
@@ -84,6 +120,16 @@ def missing_from(first, second):
 # "one" are the same word. And do not catch FileNotFoundError: you cannot fix
 # a missing path in here, so let it crash.
 def word_counts(path):
+    with open(path,'r') as f:
+        result={}
+        for line in f:
+            content=line.lower().split()
+            for i in content:
+                result[i]=result.get(i,0)+1
+        return result
+
+
+    
     """Return {word: count} for the words in a file, lowercased.
 
     Read the file line by line; split each line on whitespace; count every
@@ -100,6 +146,25 @@ def word_counts(path):
 # says WHAT, and `raise ValueError(...) from exc` keeps the original cause in
 # the traceback instead of hiding it behind your own exception.
 def parse_config(text):
+    if text=='':
+        return {}
+    else:
+        result={}
+        lines=text.split('\n')
+        for lineno,line in enumerate(lines,1):
+            line=line.strip()
+            if line == '' or line.startswith('#'):
+                continue
+            if '=' not in line:
+                raise ValueError(f"line {lineno} doesnt have '='")
+            else:
+                key,value=line.split('=',1)
+                try:
+                    result[key.strip()]=int(value.strip())
+                except ValueError as exc:
+                    raise ValueError(f'naming{value!r}is not a available value') from exc
+    return result
+
     """Return a dict of int settings parsed from "key=value" lines.
 
     Skip blank lines and lines starting with "#". Split each line on the FIRST
