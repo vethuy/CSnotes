@@ -30,13 +30,13 @@ Reading labs — code I read and answered questions about, not code I wrote.
 
 | File | What it does |
 |---|---|
-| `week2/Week2_practice.py` | Five review functions, one per night's skill (days 1–5) |
 | `week2/day01_drill01.py` | `second_largest`, `rotate_left`, `remove_duplicates` — lists, slicing, "fewer than two" edges |
 | `week2/day02_drill02.py` | `char_count`, `group_by_first_letter`, `top_n` — dicts as counters, `sorted` with a key |
 | `week2/day03_drill03.py` | `unique_words`, `common_words`, `dedupe_keep_order` — sets for "have I seen it", lists for order |
 | `week2/day04_drill04.py` | `count_lines`, `longest_line`, `read_numbers` — reading a file, skipping blanks and `#`, converting with `try` |
 | `week2/day05_drill05.py` | `safe_int`, `parse_amount`, `tally` — raising `ValueError` with the offending text, counting what fails |
 | `week2/day06_todo.py` | JSON-backed to-do CLI — `load`/`save`/`add`/`complete`/`remove`/`render` plus `main(argv)` for `list`, `add`, `done`, `remove` |
+| `week2/Week2_practice.py` | Five review functions, one per night's skill (days 1–5) |
 
 Reading labs.
 
