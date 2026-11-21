@@ -164,6 +164,6 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 
 ### Week 2 review — 2026-11-22
 
-- **What shipped this week?** —
-- **What confused me most this week?** —
-- **What is the #1 goal for Week 3?** —
+- **What shipped this week?** 5 drills — `week2/day01_drill01.py` to `week2/day05_drill05.py`, 15 functions, each `all drills pass` — 5 reading labs **13/21** (4/4, 2/4, 3/4, 1/4, 3/5), `week2/day06_todo.py` (`python week2/day06_todo.py --check` → `all project checks pass`), `week2/Week2_practice.py` (5 functions, 25 asserts), README week-2 table, 9 commits (15–21 Nov).
+- **What confused me most this week?** Code I did not write: the lab predictions scored 13/21, worst on `csv.DictReader` (1/4) — a short row filling `restval` and a long row hiding its surplus under `restkey`, which only made sense after I ran it.
+- **What is the #1 goal for Week 3?** — keep going and finish on time.
