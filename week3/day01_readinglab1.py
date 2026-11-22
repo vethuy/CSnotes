@@ -55,23 +55,29 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1)
+1)add_tag('a') = add_tag('a',[])  then tags.append('a')
+so tags=['a']  return ['a'] 
 
-2)
+2)add_tag('b') = add_tag('b',[]) then tags.append('b')
+so tags=['b']  return ['b']
 
-3)
+3)read_label() = return label--> return "global"
 
-4)
+4)write_label() then label = write label label = "local"
+    return "local"  but label is gobal value so label= "global"
 
-5)
-
+5)bump() ->", type(exc).__name__
+well it seem no problem ? count=0+1 then return 1 isnt it? 
+or it just keep running count+=1?  well i have to take a guess
+if real action is keep looping. it will cause runtime error.
 ACTUAL
 
-1)
-2)
-3)
-4)
-5)
+1) add_tag('a') = ['a']
+2) add_tag('b') = ['a', 'b']
+3) read_label() = 'global'
+4) write_label() then label = 'local' 'global'
+5) bump() -> UnboundLocalError
+3/5 not bad 
 
 One sentence on the miss (if any):
 '''

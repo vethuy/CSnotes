@@ -167,3 +167,18 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - **What shipped this week?** 5 drills — `week2/day01_drill01.py` to `week2/day05_drill05.py`, 15 functions, each `all drills pass` — 5 reading labs **13/21** (4/4, 2/4, 3/4, 1/4, 3/5), `week2/day06_todo.py` (`python week2/day06_todo.py --check` → `all project checks pass`), `week2/Week2_practice.py` (5 functions, 25 asserts), README week-2 table, 9 commits (15–21 Nov).
 - **What confused me most this week?** Code I did not write: the lab predictions scored 13/21, worst on `csv.DictReader` (1/4) — a short row filling `restval` and a long row hiding its surplus under `restkey`, which only made sense after I ran it.
 - **What is the #1 goal for Week 3?** — keep going and finish on time.
+
+---
+
+## Week 3 — 23–29 Nov 2026
+
+### Day 1 — 2026-11-22 · defaults, keywords, a clean return
+
+**Shipped:** `week3/day01_drill01.py` prints `all drills pass`; reading lab 1 `week3/day01_readinglab1.py` **3/5**.
+
+**Bug:** `merge_prefs` opened with `if user == {}: return base` (`week3/day01_drill01.py:73`), so an empty `user` handed back the caller's own dict and `merge_prefs({})` returned `None` — both against the docstring; deleting the branch and always copying `base` then updating from `user` fixed it. The check block never saw it, because it never calls `merge_prefs` with an empty `user`.
+
+**Learned:**
+- A name is local because the body assigns to it, not because you read a global — `write_label` shadows the module's `label`, and `bump`'s `count = count + 1` reads a local that does not exist yet (`UnboundLocalError`).
+- A default list is built once at `def`, so every call mutates the same object: `add_tag('b')` returns `['a', 'b']`.
+- The docstring is the spec and the check block is a sample — a branch that returns the argument itself is the bug the asserts cannot see.

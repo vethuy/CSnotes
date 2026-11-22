@@ -24,6 +24,9 @@ samples it, so an edge case you can name is an assert worth adding.
 # FUNCTION INTRODUCTION: a default argument, final_price(price, discount=0.0,
 # tax=0.0), may be omitted; a keyword call names it: final_price(100, tax=0.1).
 def final_price(price, discount=0.0, tax=0.0):
+    afterdis=price*(1-discount)
+    final=afterdis*(1+tax)
+    return round(final,2)
     """Return price after discount, then tax, rounded to 2 decimals.
 
     discount and tax are fractions of price: 0.25 is 25% off, 0.1 is 10% tax.
@@ -38,10 +41,19 @@ def final_price(price, discount=0.0, tax=0.0):
     final_price(19.99, discount=0.1)       -> 17.99
     final_price(100, discount=1.0)         -> 0.0
     """
-    raise NotImplementedError("final_price")
+    raise NotImplementedError("final_price")  
 
 
 def clamp_all(values, low=0, high=100):
+    result=[]
+    for i in values:
+        if i < low :
+            result.append(low)
+        elif i > high:
+            result.append(high)
+        else:
+            result.append(i)
+    return result
     """Return a NEW list: every value clamped into [low, high], inclusive.
 
     A value below low becomes low; a value above high becomes high.
@@ -58,6 +70,12 @@ def clamp_all(values, low=0, high=100):
 # FUNCTION INTRODUCTION: dict.update(other) copies other's key/value pairs into
 # a dict in place and returns None; merge_prefs builds the new dict first.
 def merge_prefs(user, base=None):
+    result={}
+    if base is not None:
+
+        result.update(base)
+    result.update(user)
+    return result
     """Return a NEW dict: base's pairs with user's pairs laid on top.
 
     user wins when both dicts hold the same key. base is optional; base=None
