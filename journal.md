@@ -162,7 +162,7 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - A function whose answer is "in this order" must build that order, because `sorted` answers a different question.
 - A sample that never varies its input catches nothing — the check only fed alphabetical input.
 
-### Week 2 review — 2026-11-22
+### Week 2 review — 2026-11-21
 
 - **What shipped this week?** 5 drills — `week2/day01_drill01.py` to `week2/day05_drill05.py`, 15 functions, each `all drills pass` — 5 reading labs **13/21** (4/4, 2/4, 3/4, 1/4, 3/5), `week2/day06_todo.py` (`python week2/day06_todo.py --check` → `all project checks pass`), `week2/Week2_practice.py` (5 functions, 25 asserts), README week-2 table, 9 commits (15–21 Nov).
 - **What confused me most this week?** Code I did not write: the lab predictions scored 13/21, worst on `csv.DictReader` (1/4) — a short row filling `restval` and a long row hiding its surplus under `restkey`, which only made sense after I ran it.
@@ -182,3 +182,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - A name is local because the body assigns to it, not because you read a global — `write_label` shadows the module's `label`, and `bump`'s `count = count + 1` reads a local that does not exist yet (`UnboundLocalError`).
 - A default list is built once at `def`, so every call mutates the same object: `add_tag('b')` returns `['a', 'b']`.
 - The docstring is the spec and the check block is a sample — a branch that returns the argument itself is the bug the asserts cannot see.
+
+### Day 2 — 2026-11-22 · modules, imports, a hidden default
+
+**Shipped:** `week3/day02_drill02.py` prints `all drills pass`; reading lab 2 `week3/day02_readinglab2.py` **3/5**.
+
+**Bug:** `simplify` returned floats — `(3.0, 4.0)` — because it divided with `/` (`week3/day02_drill02.py:33`) while the docstring asks for ints; every assert still passed, since `3.0 == 3`, and `//` fixed it. In `is_palindrome`, `final[::1]` copied the string forward instead of reversing it, so the function answered `True` for every input — the first check that noticed was `is_palindrome("hello") is False`, the first one expecting `False`.
+
+**Learned:**
+- `s.split(None)` splits on any run of whitespace and drops the empty pieces, which is why `capwords("hello   world")` keeps one space and `capwords("  spam  ")` loses both ends — the surprise is the *missing* `sep` argument, not `sep or ' '`.
+- In a slice the step is the direction — `[::-1]` walks backwards, `[::1]` is a copy — and five asserts that all expect `True` cannot tell a working palindrome check from one that says `True` to everything.
+- `x.method` is the function and `x.method()` is its result; `.casefold` without the parens left a method object, and slicing it raised `TypeError: 'builtin_function_or_method' object is not subscriptable`.

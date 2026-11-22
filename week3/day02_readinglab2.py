@@ -30,22 +30,23 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write before running.
-
-1) string.capwords("hello   world") =
-2) string.capwords("they're ok") =
-3) string.capwords("a-b c", sep="-") =
-4) string.capwords("  spam  ") =
-5) string.capwords("ABC def") =
+ok i check string.capwords(str,sep=None) .it Returns a new string where the first letter 
+of each word is capitalized, and all other letters are converted to lowercase.
+1) string.capwords("hello   world") ='Hello    World'
+2) string.capwords("they're ok") ='They're Ok'
+3) string.capwords("a-b c", sep="-") ='A-B c'
+4) string.capwords("  spam  ") ='   Spam   '
+5) string.capwords("ABC def") ='Abc Def'
    (which call surprised you, and which character of the body caused it?)
 
 
 ACTUAL - paste after running.
 
-1)
-2)
-3)
-4)
-5)
-
+1) string.capwords("hello   world")      = 'Hello World'
+2) string.capwords("they're ok")        = "They're Ok"
+3) string.capwords("a-b c", sep="-")     = 'A-B c'
+4) string.capwords("  spam  ")           = 'Spam'
+5) string.capwords("ABC def")            = 'Abc Def'
+3/5 only space betwween two words
 One sentence on the miss:
 '''

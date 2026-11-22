@@ -19,12 +19,20 @@ LOAD: 1 drill, 3 functions, about 20-25 minutes. Read the FUNCTION
 INTRODUCTION before you type. Each docstring is the spec; the check block only
 samples it, so an edge case you can name is an assert worth adding.
 """
-
+import math
+import string
 
 # FUNCTION INTRODUCTION: math.gcd(a, b) returns the greatest common divisor of
 # two whole numbers and ignores their signs: math.gcd(-6, 8) is 2. It is not
 # the fraction module - simplify still divides both parts yourself.
 def simplify(num, den):
+    if den<0:
+        num-=2*num
+        den-=2*den
+    div=math.gcd(num,den)
+    return (int(num/div),int(den/div))
+    
+
     """Return the fraction num/den as a reduced (numerator, denominator) tuple.
 
     The denominator is never 0 - the caller guarantees it. The returned
@@ -46,6 +54,17 @@ def simplify(num, den):
 # punctuation characters, so "ch in string.punctuation" is a membership test -
 # no list of characters to type, and no regex needed.
 def strip_punctuation(text):
+    str=''
+    for i in text:
+        if i in string.punctuation:
+            continue
+        else:
+            str+=i
+    return str
+
+
+        
+            
     """Return text with every ASCII punctuation character removed.
 
     Spaces and digits and letters stay. Punctuation is exactly the characters
@@ -64,6 +83,11 @@ def strip_punctuation(text):
 # FUNCTION INTRODUCTION: str.casefold() is the lower() you want for comparison:
 # "Straße".casefold() is "strasse", while lower() leaves the sharp s alone.
 def is_palindrome(text):
+    cleaned=strip_punctuation(text)
+    str=(cleaned.replace(' ','')).casefold()
+    reverse=str[::-1]
+    return str==reverse
+
     """Return True when text reads the same forwards and backwards.
 
     Ignore case, spaces and punctuation before comparing - so
@@ -92,7 +116,7 @@ if __name__ == "__main__":
     assert simplify(7, 1) == (7, 1)
     assert simplify(9, 6) == (3, 2)
     assert isinstance(simplify(6, 8), tuple)
-
+    
     assert strip_punctuation("Hi, there!") == "Hi there"
     assert strip_punctuation("a-b") == "ab"
     assert strip_punctuation("wait... what?") == "wait what"
