@@ -204,3 +204,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - `sorted(x)` returns a new list in ascending order, while `x.sort()` returns `None` and reorders the caller's list — that one choice is what makes `median` pure.
 - `StatisticsError` is a `ValueError` subclass, so `except ValueError` catches it, and `median([])` raises it as `no median for empty data`.
 - `items + extra` and a list comprehension already build a new list, so `append_all` and `with_tax` were one expression, not an accumulator loop.
+
+### Day 4 — 2026-11-23 · tests as specs, boundaries, one green lie
+
+**Shipped:** `week3/day04_drill04.py` prints `all drills pass`; reading lab 4 `week3/day04_readinglab4.py` **5/5**.
+
+**Bug:** `parse_bool("maybe")` raised `ValueError(text, 'is not a boolean express')` — two arguments, so `str(exc)` was the tuple repr `"('maybe', 'is not a boolean express')"`, not a sentence; one f-string fixed it. `grade(101)`'s message was `101is not a acceptable score` — the f-string glued the score to the words — and no assert could see it, because the check only asks for `ValueError`.
+
+**Learned:**
+- `ValueError(a, b)` stores two arguments and `str(exc)` shows the tuple, so a message is built by joining inside the call, not by passing the parts.
+- A test is only as strict as its expected value: `chunk("abcd", 2) == ["ab", "cd"]` passes because the expectation was copied from the output, not from the docstring — the pieces are `str`, and only a test that demands a `list` would have failed.
+- Q: which of the five tests passes for the wrong reason? A: `test_chunk_string` — slicing a `str` yields `str`, so a stricter test would assert every chunk is a `list`, or that `chunk("abcd", 2)` raises, since the docstring says `items` is a list.

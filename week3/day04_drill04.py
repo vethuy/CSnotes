@@ -25,6 +25,19 @@ samples it.
 # the natural shape here - the first true branch wins, so the order high-to-low
 # is the whole algorithm.
 def grade(score):
+    if 0<=score<=100:
+        if score>=90:
+            return 'A'
+        elif score>=80:
+            return 'B'
+        elif score>=70:
+            return 'C'
+        elif score>=60:
+            return 'D'
+        else:
+            return 'F'
+    else:
+        raise ValueError(f"{score} is not an acceptable score")
     """Return the letter grade for a numeric score.
 
     A is 90 and above, B is 80 and above, C is 70 and above, D is 60 and above,
@@ -45,7 +58,16 @@ def grade(score):
 # FUNCTION INTRODUCTION: text.strip().lower() normalises before a membership
 # test, so "  YES " and "yes" take the same branch.
 def parse_bool(text):
-    """Return True or False for a yes/no string.
+    word=text.lower().strip()
+    if word=='true' or word=='yes' or word=='1':
+        return True
+    elif word=='false' or word=='no' or word=='0':
+        return False
+    else:
+        raise ValueError(f"{text} is not a boolean express")
+    
+    """
+    Return True or False for a yes/no string.
 
     Case and surrounding spaces are ignored. "true", "yes" and "1" are True;
     "false", "no" and "0" are False. Anything else is not a boolean: raise
@@ -64,6 +86,17 @@ def parse_bool(text):
 # FUNCTION INTRODUCTION: divmod(total, 60) returns (minutes, seconds) in one
 # step - and `:02d` pads a number to two digits inside an f-string.
 def format_duration(seconds):
+    if seconds<0:
+        raise ValueError(seconds,'is not a time')
+    elif seconds<3600:
+        min,sec=divmod(seconds,60)
+        return f"{min}:{sec:02d}"
+    else:
+        min,sec=divmod(seconds,60)
+        hour,minute=divmod(min,60)
+        return f"{hour}:{minute:02d}:{sec:02d}"
+    
+
     """Return a clock-style string for a whole number of seconds.
 
     Under an hour the shape is "M:SS" (minutes unpadded, seconds always two
@@ -114,7 +147,7 @@ if __name__ == "__main__":
         assert "maybe" in str(exc)
     else:
         raise AssertionError("parse_bool('maybe') should raise ValueError")
-
+    
     assert format_duration(0) == "0:00"
     assert format_duration(59) == "0:59"
     assert format_duration(60) == "1:00"

@@ -48,22 +48,25 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1) test_chunk_even      True or False?
-2) test_chunk_empty     True or False?
-3) test_chunk_odd       True or False?
+1) test_chunk_even      True or False?  True
+2) test_chunk_empty     True or False?  True
+3) test_chunk_odd       True or False?  True
 4) test_chunk_string    True or False?  (and is that what the docstring promised?)
+for i in range(0,4,2)  (1)items[0:2]-->'ab' (2)[2:4]-->'cd'  end retuen a list['ab','cd']
 5) test_chunk_zero      raises what type, with what message?
+for i in range (0,2,0) ,I found step default is 1, so it raise ValurError:range() arg 3 must not be zero
 
 Which test passes for the wrong reason?
 
 
 ACTUAL - paste after running.
 
-1)
-2)
-3)
-4)
-5)
+test_chunk_even      True
+test_chunk_empty     True
+test_chunk_odd       True
+test_chunk_string    True
+test_chunk_zero     raises ValueError - range() arg 3 must not be zero
+5/5 perfect
 
 One sentence on the miss:
 '''
