@@ -27,6 +27,12 @@ samples it.
 # append_all is one expression - the bug to avoid is out = items followed by
 # out.append(...), which edits the caller's list in place.
 def append_all(items, extra):
+    result=[]
+    for i in items:
+        result.append(i)
+    for j in extra:
+        result.append(j)
+    return result
     """Return a new list: everything in items, then everything in extra.
 
     Neither items nor extra may be modified. The result is always a new list,
@@ -45,6 +51,11 @@ def append_all(items, extra):
 # FUNCTION INTRODUCTION: a list comprehension over a list builds a new list;
 # there is no copy step to forget. with_tax(amounts, 0.1) returns new prices.
 def with_tax(amounts, rate):
+    result=[]
+    for i in amounts:
+        result.append(round(i*(1+rate),2))
+    return result
+
     """Return a NEW list: each amount multiplied by (1 + rate), rounded to 2.
 
     rate is a fraction: 0.1 is 10% tax, 0.0 leaves every amount as it is.
@@ -63,6 +74,12 @@ def with_tax(amounts, rate):
 # FUNCTION INTRODUCTION: dict(mapping) makes a shallow copy, so removing a key
 # from the copy cannot remove it from the caller's dict.
 def without_key(mapping, key):
+    new=dict(mapping)
+    try:
+        new.pop(key)
+    except KeyError:
+        pass
+    return new
     """Return a NEW dict: a copy of mapping with key removed.
 
     mapping must not be modified. A key that is not in mapping is not an

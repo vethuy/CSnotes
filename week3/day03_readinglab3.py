@@ -39,20 +39,20 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1) statistics.median([3, 1, 2]) =
-2) statistics.median([1, 2, 3, 4]) =
-3) statistics.median([3, 1, 2, 1]) =
-4) the list [3, 1, 2] after the call =
-5) statistics.median([]) raises  (type and message) =
+1) statistics.median([3, 1, 2]) = [3,2,1]-->2
+2) statistics.median([1, 2, 3, 4]) = [4,3,2,1]-->(2+3)/2=2.5
+3) statistics.median([3, 1, 2, 1]) =[3,2,1,1]-->(2+1)/2=1.5
+4) the list [3, 1, 2] after the call = statistics.median() return a new list so the original one = [3,1,2]
+5) statistics.median([]) raises  (type and message) =StatisticsError the message i found from internet:data requires at least one data point
 
 
 ACTUAL - paste after running.
 
-1)
-2)
-3)
-4)
-5)
-
+1) statistics.median([3, 1, 2])       = 2
+2) statistics.median([1, 2, 3, 4])    = 2.5
+3) statistics.median([3, 1, 2, 1])    = 1.5
+4) the list [3, 1, 2] after the call  = [3, 1, 2]
+5) statistics.median([]) raises     = StatisticsError - no median for empty data
+4/5? is the last one count?
 One sentence on the miss:
 '''

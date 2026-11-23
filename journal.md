@@ -193,3 +193,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - `s.split(None)` splits on any run of whitespace and drops the empty pieces, which is why `capwords("hello   world")` keeps one space and `capwords("  spam  ")` loses both ends — the surprise is the *missing* `sep` argument, not `sep or ' '`.
 - In a slice the step is the direction — `[::-1]` walks backwards, `[::1]` is a copy — and five asserts that all expect `True` cannot tell a working palindrome check from one that says `True` to everything.
 - `x.method` is the function and `x.method()` is its result; `.casefold` without the parens left a method object, and slicing it raised `TypeError: 'builtin_function_or_method' object is not subscriptable`.
+
+### Day 3 — 2026-11-23 · pure functions, `sorted` on a copy
+
+**Shipped:** `week3/day03_drill03.py` prints `all drills pass`; reading lab 3 `week3/day03_readinglab3.py` **4/5**.
+
+**Optimization:** read the cited stdlib lines before predicting — `Lib\statistics.py:637` had the exact message `no median for empty data`, and the one I took from the internet was wrong.
+
+**Learned:**
+- `sorted(x)` returns a new list in ascending order, while `x.sort()` returns `None` and reorders the caller's list — that one choice is what makes `median` pure.
+- `StatisticsError` is a `ValueError` subclass, so `except ValueError` catches it, and `median([])` raises it as `no median for empty data`.
+- `items + extra` and a list comprehension already build a new list, so `append_all` and `with_tax` were one expression, not an accumulator loop.
