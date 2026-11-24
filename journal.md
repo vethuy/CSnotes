@@ -215,3 +215,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - `ValueError(a, b)` stores two arguments and `str(exc)` shows the tuple, so a message is built by joining inside the call, not by passing the parts.
 - A test is only as strict as its expected value: `chunk("abcd", 2) == ["ab", "cd"]` passes because the expectation was copied from the output, not from the docstring — the pieces are `str`, and only a test that demands a `list` would have failed.
 - Q: which of the five tests passes for the wrong reason? A: `test_chunk_string` — slicing a `str` yields `str`, so a stricter test would assert every chunk is a `list`, or that `chunk("abcd", 2)` raises, since the docstring says `items` is a list.
+
+### Day 5 — 2026-11-24 · three bugs that run, one traceback walk
+
+**Shipped:** `week3/day05_drill05.py` prints `all drills pass`; reading lab 5 `week3/day05_readinglab5.py` **5/5**.
+
+**Bug:** `running_total` returned the caller's list because `out = nums` copied the name and not the list, and `list(nums)` fixed it; `bump` raised `UnboundLocalError: cannot access local variable 'count' where it is not associated with a value` because its `count = count + 1` made the name local, and `nonlocal count` moved it one scope out; `add_label`'s default `[]` was built once at `def` time, so the second no-arg call returned `['a', 'b']`, and a `None` sentinel plus a copy fixed it.
+
+**Learned:**
+- A function assigns a name for its whole body — `count = count + 1` inside `bump` made `count` local before the first line ran, so the read raised `UnboundLocalError` — and `nonlocal` is the compile-time promise that the name belongs to the enclosing function.
+- Default arguments are evaluated once when the `def` runs and live on `add_label.__defaults__`, so a mutable default is one object shared by every call that omits it; `None` plus a fresh list inside is the fix.
+- Q: `best` is the function you call, but which function does the traceback blame? A: `parse_line` — walking `exc.__traceback__` to `tb_next is None` leaves the innermost frame, and its `tb_frame.f_code.co_name` and `tb_lineno` name the line where the value went bad (`:19` unpack, `:20` `int()`).

@@ -28,6 +28,7 @@ bodies are not.
 # THE BUG: the first assert passes. The second one says the caller's list is
 # not what it was - read where `out` comes from.
 def running_total(nums):
+
     """Return a NEW list of running totals: each entry is the sum so far.
 
     nums must not be modified. running_total([]) is [].
@@ -36,7 +37,7 @@ def running_total(nums):
     running_total([5])          -> [5]
     running_total([])           -> []
     """
-    out = nums
+    out = list(nums)
     for i in range(1, len(out)):
         out[i] = out[i - 1] + out[i]
     return out
@@ -45,6 +46,7 @@ def running_total(nums):
 # THE BUG: the traceback ends in bump, at the line that adds 1. The name on the
 # left of the = is not the name the function is reading.
 def make_counter(start=0):
+
     """Return a function that returns start+1, then start+2, then start+3...
 
     Each call to make_counter gets its OWN count; counters do not share it.
@@ -52,9 +54,11 @@ def make_counter(start=0):
     c = make_counter(); c() -> 1; c() -> 2
     d = make_counter(10); d() -> 11; c() -> 3
     """
+    
     count = start
 
     def bump():
+        nonlocal count
         count = count + 1
         return count
 
@@ -63,7 +67,7 @@ def make_counter(start=0):
 
 # THE BUG: the first two asserts pass. The third call returns a list that
 # remembers the earlier calls - look at when the default was built.
-def add_label(text, labels=[]):
+def add_label(text, labels=None):
     """Return a NEW list: labels plus text at the end.
 
     labels must not be modified. A missing labels means an empty new list, and
@@ -73,8 +77,11 @@ def add_label(text, labels=[]):
     add_label("b")                    -> ["b"]
     add_label("b", ["a"])             -> ["a", "b"]
     """
-    labels.append(text)
-    return labels
+    if labels is None:
+        labels=[]
+    a=list(labels)
+    a.append(text)
+    return a
 
 
 if __name__ == "__main__":
@@ -89,7 +96,7 @@ if __name__ == "__main__":
     second = make_counter(10)
     assert second() == 11
     assert first() == 3
-
+    
     assert add_label("a") == ["a"]
     assert add_label("b") == ["b"]
     assert add_label("b", ["a"]) == ["a", "b"]

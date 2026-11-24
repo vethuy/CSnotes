@@ -53,21 +53,28 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write before running.
-
-1) best(["a,3", "b,5"]) =
-2) best([]) =
-3) best(["a,3", "b"])       raises: type / message / which function
-4) best(["a,3", "b,x"])     raises: type / message / which function
-5) best(["a,3", ""])        raises: type / message / which function
+all labels in show()
+1) best(["a,3", "b,5"]) = for line in  ["a,3", "b,5"]  (1)top = ('a',3)  (2)5>3 top=('b',5)
+no Exception so print  best(["a,3", "b,5"])->('b',5)
+2) best([]) =for line in [] no line ,so print best([]) -> None
+3) best(["a,3", "b"]) for line in ['a,3', 'b'] (1)top=('a',3)then raise in here  name, score = line.split(",")(score missing)
+so it raise ValueError/not enough values to unpack (expected 2, got 1) /line19:parse_line(line)    raises: type / message / which function
+4) best(["a,3", "b,x"]) for line in ['a,3', 'b,x'] (1)top=('a',3)  then raise in int('x')
+so it raise ValueError/invalid literal for int() with base 10: 'x' / line20:parse_line(line) raises: type / message / which function
+5) best(["a,3", ""])   (1)top=('a',3)then raise in here  name, score = line.split(",")(score missing)
+so it raise ValueError/not enough values to unpack (expected 2, got 1) /line19:parse_line(line)      raises: type / message / which function
 
 
 ACTUAL - paste after running.
 
-1)
-2)
-3)
-4)
-5)
-
+1) best(['a,3', 'b,5'])  -> ('b', 5)
+2) best([])              -> None
+3) best(['a,3', 'b'])    -> ValueError - not enough values to unpack (expected 2, got 1)
+     raised in parse_line at line 19
+4) best(['a,3', 'b,x'])  -> ValueError - invalid literal for int() with base 10: 'x'
+     raised in parse_line at line 20
+5) best(['a,3', ''])     -> ValueError - not enough values to unpack (expected 2, got 1)
+     raised in parse_line at line 19
+5/5
 One sentence on the miss:
 '''
