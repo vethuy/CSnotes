@@ -20,11 +20,16 @@ Read every docstring before you type. The ten tests in
 body is yours to write. Done when the report says 10 passed.
 """
 
-
 # FUNCTION INTRODUCTION: max(...) with a generator is the "highest so far"
 # idiom - max(t["id"] for t in tasks) - and the empty case needs its own answer
 # because max() of nothing raises ValueError.
 def new_id(tasks):
+    if tasks==[]:
+        return 1
+    else:
+        result=max(i['id'] for i in tasks)
+        return result
+
     """Return the id the next task should get: highest existing id + 1.
 
     An empty list gets 1. Gaps are not filled: if the ids are 3 and 1, the next

@@ -27,8 +27,8 @@ from day06_tools import (
 
 
 def test_new_id_on_empty_list():
+    assert new_id([])==1
     """The first task in an empty list gets id 1."""
-    raise NotImplementedError("test_new_id_on_empty_list")
 
 
 def test_new_id_is_highest_plus_one():
