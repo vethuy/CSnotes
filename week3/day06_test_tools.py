@@ -32,45 +32,93 @@ def test_new_id_on_empty_list():
 
 
 def test_new_id_is_highest_plus_one():
+    assert new_id([{'id':1},{'id':3}])==4
     """Ids 3 and 1 -> next is 4. Gaps are not filled."""
-    raise NotImplementedError("test_new_id_is_highest_plus_one")
+ 
 
 
 def test_add_task_does_not_modify_the_original():
+    tasks=[{'id': 1,'text': 'read','done': False}]
+    assert add_task(tasks,'write') == [{'id': 1,'text': 'read','done': False},{'id': 2,'text': 'write','done': False}]
+    assert tasks==[{'id': 1,'text': 'read','done': False}]
     """add_task returns a NEW list; the caller's list is the same length afterwards."""
-    raise NotImplementedError("test_add_task_does_not_modify_the_original")
+    
 
 
 def test_add_task_uses_the_next_id():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    assert add_task(tasks,'speak')==[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False},{'id': 4,'text': 'speak','done': False}]
     """The appended task gets the id new_id(tasks) would return, and starts open."""
-    raise NotImplementedError("test_add_task_uses_the_next_id")
+    
 
 
 def test_find_task_finds_or_returns_none():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    assert find_task(tasks,3)=={'id': 3,'text': 'write','done': False}
+    assert find_task([],1)==None
+    assert find_task(tasks,7)==None
     """find_task returns the task dict for a known id and None for an unknown one."""
-    raise NotImplementedError("test_find_task_finds_or_returns_none")
 
 
 def test_complete_task_marks_done():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    assert complete_task(tasks,1)==[{'id': 1,'text': 'read','done': True},{'id': 3,'text': 'write','done': False}]
+    assert tasks==[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
     """The returned list has that task's done True - and the original still has False."""
-    raise NotImplementedError("test_complete_task_marks_done")
+    
 
 
 def test_complete_task_unknown_id_raises():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    try:
+        complete_task(tasks,7)
+    except ValueError:
+        pass
     """Completing an id that does not exist raises ValueError."""
-    raise NotImplementedError("test_complete_task_unknown_id_raises")
+    
 
 
 def test_remove_task_removes_or_raises():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    assert remove_task(tasks,1)==[{'id': 3,'text': 'write','done': False}]
+    assert tasks==[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    try:
+        remove_task(tasks,99)
+    except ValueError:
+        pass
     """Removing id 1 drops exactly that task; removing id 99 raises ValueError."""
-    raise NotImplementedError("test_remove_task_removes_or_raises")
-
+    
 
 def test_render_task_open_and_done():
+    tasks=[{'id': 1,'text': 'read','done': False},{'id': 3,'text': 'write','done': False}]
+    assert render_task(tasks)=='1. [ ] read\n3. [ ] write'
+    finish=complete_task(tasks,1)
+    assert render_task(finish)=='1. [x] read\n3. [ ] write'
     """An open task renders "1. [ ] read"; a done one renders "1. [x] read"."""
-    raise NotImplementedError("test_render_task_open_and_done")
+    
 
 
 def test_parse_command():
+    assert parse_command(["list"])  == ("list",)
+    assert parse_command(["add", "read"]) == ("add", "read")
+    assert parse_command(["add", "read","book"]) == ("add", "read book")
+    assert parse_command(["done", "3"])   == ("done", 3)
+    assert parse_command(["remove", "3"]) == ("remove", 3)
+    try:
+        parse_command([])   
+    except ValueError:
+        pass      
+    try:
+        parse_command(["nope"])   
+    except ValueError:
+        pass             
+    try:
+        parse_command(["remove", "x"])   
+    except ValueError:
+        pass    
+    try:
+            parse_command(["add", "/","8"])   
+    except ValueError:
+            pass 
     """list/add/done/remove parse to tuples; empty, unknown and a bad id raise ValueError."""
-    raise NotImplementedError("test_parse_command")
+   

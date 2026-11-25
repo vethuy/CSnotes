@@ -226,3 +226,20 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - A function assigns a name for its whole body — `count = count + 1` inside `bump` made `count` local before the first line ran, so the read raised `UnboundLocalError` — and `nonlocal` is the compile-time promise that the name belongs to the enclosing function.
 - Default arguments are evaluated once when the `def` runs and live on `add_label.__defaults__`, so a mutable default is one object shared by every call that omits it; `None` plus a fresh list inside is the fix.
 - Q: `best` is the function you call, but which function does the traceback blame? A: `parse_line` — walking `exc.__traceback__` to `tb_next is None` leaves the innermost frame, and its `tb_frame.f_code.co_name` and `tb_lineno` name the line where the value went bad (`:19` unpack, `:20` `int()`).
+
+### Day 6 — 2026-11-25 · to-do data as pure functions, ten tests
+
+**Shipped:** `week3/day06_tools.py` (seven functions, `new_id` … `parse_command`) and `week3/day06_test_tools.py`; `python -m pytest week3/day06_test_tools.py` → `10 passed`.
+
+**Bug:** `parse_command(["done"])` raises `IndexError: list index out of range` at `week3/day06_tools.py:164` — `argv[1]` is read before it is known to exist, while the docstring asks for `ValueError` on a missing id.
+
+**Learned:**
+- `list(tasks)` copies the outer list only, so `target['done'] = True` edited the caller's task; `{**i, 'done': True}` built the new dict the returned list needed.
+- `type("3") == int` is `False` — words from the command line are always `str`, so "a whole number" is proved by `int()` inside a `try`, not by a type test.
+- Q: why did the `add` test pass while returning only the first word? A: it typed one word, so `' '.join(argv[1:])` was never exercised.
+
+### Week 3 review — 2026-11-25
+
+- **What shipped this week?** 5 drills — `week3/day01_drill01.py` to `week3/day05_drill05.py`, 15 functions, each `all drills pass` — 5 reading labs **20/25** (3/5, 3/5, 4/5, 5/5, 5/5), `week3/day06_tools.py` + `week3/day06_test_tools.py` (`10 passed`), the README week-3 tables, and 6 journal entries (22–25 Nov). The day-6 pair is not committed yet, so the `week03` branch, PR and issue are still open.
+- **What confused me most this week?** `list(tasks)` — a copy whose dicts were still the caller's, so `target['done'] = True` changed a list I thought I had protected; and `argv` from the command line, where every word is a `str`, so `type("3") == int` is never true.
+- **What is the #1 goal for Week 4?**keep motivation!

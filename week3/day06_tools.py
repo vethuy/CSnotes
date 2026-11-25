@@ -28,7 +28,7 @@ def new_id(tasks):
         return 1
     else:
         result=max(i['id'] for i in tasks)
-        return result
+        return result+1
 
     """Return the id the next task should get: highest existing id + 1.
 
@@ -46,6 +46,10 @@ def new_id(tasks):
 
 
 def add_task(tasks, text):
+    result=list(tasks)
+    add={'id': new_id(tasks),'text': text,'done': False}
+    result.append(add)
+    return result
     """Return a NEW list: the old tasks, then a new open task with the next id.
 
     tasks must not be modified. text is a str and is stored unchanged; the new
@@ -60,6 +64,10 @@ def add_task(tasks, text):
 
 
 def find_task(tasks, task_id):
+    for i in tasks:
+        if i['id'] == task_id:
+            return i
+    return None
     """Return the task dict with this id, or None when there is no such task.
 
     Do not raise for a missing id; the caller decides what a missing task
@@ -73,6 +81,17 @@ def find_task(tasks, task_id):
 
 
 def complete_task(tasks, task_id):
+    if find_task(tasks,task_id)==None:
+        raise ValueError(f"no task with id: {task_id}")
+    result=[]
+    for i in tasks:
+        if i['id']==task_id:
+            result.append({**i,'done': True})
+        else:
+            result.append(i)
+    return result
+
+        
     """Return a NEW list with that task marked done.
 
     tasks must not be modified - the old list still has the task open. If no
@@ -85,6 +104,15 @@ def complete_task(tasks, task_id):
 
 
 def remove_task(tasks, task_id):
+    if find_task(tasks,task_id)==None:
+        raise ValueError(f"no task with id: {task_id}")
+    result=[]
+    for i in tasks:
+        if i['id']==task_id:
+            continue
+        else:
+            result.append(i)
+    return result
     """Return a NEW list without that task.
 
     tasks must not be modified. If no task has this id, raise ValueError
@@ -96,7 +124,16 @@ def remove_task(tasks, task_id):
 
 
 def render_task(task):
-    """Return one line of text: the id, a done box, and the text.
+    lines=[]
+    for i in task:
+        id,text,done=i['id'],i['text'],i['done']
+        if done==True:
+            lines.append(f"{id}. [x] {text}")
+        else:
+            lines.append(f"{id}. [ ] {text}")
+    return '\n'.join(lines)
+
+    """Return full text of task: the id, a done box, and the text.
 
     The box is "[x]" when done is True and "[ ]" when it is False. The id is
     followed by a dot and a space.
@@ -108,6 +145,36 @@ def render_task(task):
 
 
 def parse_command(argv):
+    if argv==[]:
+        raise ValueError(f"this is not a command")
+    command=['list','add','done','remove']
+    if argv[0] not in command :
+        raise ValueError(f"this is not a command")
+    if argv[0]=='list':
+        return (argv[0],)
+    elif argv[0]=='add':
+        try:
+            str(argv[1:])
+        except ValueError:
+            raise ValueError(f"{argv[1:]} is not a vaild")
+        else:
+            return (argv[0],' '.join(argv[1:]))
+    elif argv[0]=='done':
+        try:
+            int(argv[1])
+        except ValueError:
+            raise ValueError(f"{argv[1]} is not a vaild")
+        else:
+            return (argv[0],int(argv[1]))
+    elif argv[0]=='remove':
+        try:
+             int(argv[1])
+        except ValueError:
+            raise ValueError(f"{argv[1]} is not a vaild")
+        else:
+            return (argv[0],int(argv[1]))
+    else:
+        raise ValueError(f"{argv[1]} is not a vaild")
     """Return a command tuple from the words after the program name.
 
     ("list",) for no extra words · ("add", text) for add · ("done", id) and
