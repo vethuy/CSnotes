@@ -243,3 +243,16 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - **What shipped this week?** 5 drills — `week3/day01_drill01.py` to `week3/day05_drill05.py`, 15 functions, each `all drills pass` — 5 reading labs **20/25** (3/5, 3/5, 4/5, 5/5, 5/5), `week3/day06_tools.py` + `week3/day06_test_tools.py` (`10 passed`), the README week-3 tables, and 6 journal entries (22–25 Nov). The day-6 pair is not committed yet, so the `week03` branch, PR and issue are still open.
 - **What confused me most this week?** `list(tasks)` — a copy whose dicts were still the caller's, so `target['done'] = True` changed a list I thought I had protected; and `argv` from the command line, where every word is a `str`, so `type("3") == int` is never true.
 - **What is the #1 goal for Week 4?**keep motivation!
+
+## Week 4 — 30 Nov–6 Dec 2026
+
+### Day 1 — 2026-11-25 · linear scan, binary halving, the sorted precondition
+
+**Shipped:** `week4/day01_drill01.py` prints `all drills pass`; reading lab 1 `week4/day01_readinglab1.py` **7/7**.
+
+**Bug:** `binary_search([1, 3, 5, 7], 8)` raised `IndexError: list index out of range` at `week4/day01_drill01.py:47` — `high = len(items)` was one past the last index, so `mid` could equal `len(items)`, and the check block never asked for a target past the end. Earlier `area = list[items]` was a type alias, not a copy, so `len(area)` raised `TypeError: object of type 'types.GenericAlias' has no len()` at `:44`, and `low = middle` / `high = middle` kept the window the same size and looped forever on a miss.
+
+**Learned:**
+- Q: why `while lo < hi` and not `<=`? A: with `<=` on an absent target, `lo == hi` still enters, `mid == lo`, and `hi = mid` leaves the window unchanged — an infinite loop.
+- Q: in `[1, 3, 3, 3, 7]`, why does `bisect_left` return `1` and not a later `3`? A: equality sets `hi = mid`, keeping the match inside the window and searching the left half again.
+- A window is either half-open (`hi = len(items)`, `lo < hi`) or inclusive (`hi = len(items) - 1`, `lo <= hi`); mixing the two puts `mid` past the last index.

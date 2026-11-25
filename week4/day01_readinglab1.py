@@ -57,14 +57,27 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1) empty list      -> ?
-2) single hit      -> ?
-3) single miss     -> ?
-4) past the end    -> ?
-5) duplicates      -> ?   (why is it not 2?)
-6) between items   -> ?
-7) after insert    -> ?
-8) [1, 3, 5, 7, 9], target 9: how many times does the while loop run?
+1) empty list      -> 0 while 0<0 False return 0
+2) single hit      -> 0 while 0<1 True mid=0  items[0]=7<7 False hi=0 while 0<0 False return 0
+3) single miss     -> 1 while 0<1 True mid=0 item[0]=7<9 True lo=1 while 1<1 False return 1
+4) past the end    -> 3 while 0<3 True mid=1 item[1]=3<9 True lo=2 while 2<3 True mid=2 item[2]=5<9 True lo=3 while 3<3 False return 3
+5) duplicates      -> 1 while 0<5 mid=2 item[2]=3<3 False hi=2 while 0<2 mid=1 item[1]=3<3 False hi=1 while 0<1 mid=0 item[0]=1<3 True lo=1
+                        while 1<1 False return 1  (why is it not 2?)
+6) between items   -> 3 while 0<4 mid=2 item[2]=3<4 True lo=3 while3<4 mid=3 item[3]=5<4 False hi=3 while 3<3 False return 3
+7) after insert    -> after insert  [1,3,4,5] while 0<3 mid=1 items[1]=3<4 True lo=2 while 2<3 mid=2 item[2]=5<4 False hi=2 while 2<2 False return 2
+                       it become values.insert(2, 4)  so print after insert  [1,3,4,5]
+8) [1, 3, 5, 7, 9], target 9: how many times does the while loop run? 0<5(1) mid=2 5<9 lo=3 3<5(2) mid=4 9<9 False hi=4 3<4(3) mid=3 7<9 lo=4 while4<4 end
+                            actual run 3 times  return 4
 
 ACTUAL - paste after running.
+empty list      0
+single hit      0
+single miss     1
+past the end    3
+duplicates      1
+between items   3
+after insert    [1, 3, 4, 5]
+7/7
+8) check by dsh.No actual output
+checked 8/8
 '''

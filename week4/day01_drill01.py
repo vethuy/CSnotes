@@ -22,6 +22,10 @@ function, draw lo / mid / hi on paper for [1, 3, 5, 7, 9] looking for 7.
 
 
 def linear_search(items, target):
+    for i in items:
+        if i == target:
+            return items.index(i)
+    return -1
     """Return the index of the FIRST item equal to target, or -1.
 
     items may be empty and in any order. Must not be modified. -1 means
@@ -36,6 +40,18 @@ def linear_search(items, target):
 
 
 def binary_search(items, target):
+    low=0
+    high=len(items)-1
+    while low<=high:
+        middle=(low+high)//2
+        if items[middle]==target:
+            return middle
+            break
+        elif items[middle]<target:
+            low=middle+1
+        elif items[middle]>target:
+            high=middle-1
+    return -1
     """Return the index of ANY item equal to target, or -1.
 
     items is ALREADY sorted ascending - that is the price of the speed, and
@@ -52,6 +68,7 @@ def binary_search(items, target):
 
 
 def is_sorted(items):
+    return items==sorted(items)
     """Return True when items is in non-decreasing order, else False.
 
     Empty and one-item lists count as sorted. Equal neighbours are allowed.
