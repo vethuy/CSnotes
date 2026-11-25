@@ -69,3 +69,25 @@ Reading labs.
 | `week3/day03_readinglab3.py` | CPython 3.13, `Lib/statistics.py:621` | `median` sorts a copy (`sorted`, never `.sort()`), interpolates an even count, raises `StatisticsError` on empty |
 | `week3/day04_readinglab4.py` | own snippet | a five-test file: one test passes on a type the docstring never promised, one call raises `ValueError` |
 | `week3/day05_readinglab5.py` | own snippet | walking to the innermost traceback frame; exception type, message, and which function actually raised |
+
+## Week 4
+
+| File | What it does |
+|---|---|
+| `week4/day01_drill01.py` | `linear_search`, `binary_search`, `is_sorted` — O(n) vs O(log n), and the sorted precondition written as code |
+| `week4/day02_drill02.py` | `bubble_sort`, `bubble_sort_counted`, `bubble_swaps` — the first O(n^2), plus comparisons and swaps as numbers |
+| `week4/day03_drill03.py` | `min_index`, `selection_sort`, `insertion_sort` — find the smallest, swap it in; grow a sorted prefix |
+| `week4/day04_drill04.py` | `factorial`, `fib`, `sum_to` — recursion with a base case and a smaller call, no loops |
+| `week4/day05_drill05.py` | `sum_recursive`, `max_recursive`, `binary_search_recursive` — recursion over the tail, and a recursion that halves |
+| `week4/day06_algorithms.py` | capstone part 1: `linear_search`, `binary_search`, `bubble_sort`, `insertion_sort` with complexity notes |
+| `week4/day06_test_algorithms.py` | twelve `pytest` tests, empty/one/duplicates/absent/unchanged; starts as 12 failed stubs, done at 12 passed |
+
+Reading labs.
+
+| File | Source | What it exercises |
+|---|---|---|
+| `week4/day01_readinglab1.py` | CPython 3.13, `Lib/bisect.py:74` | `bisect_left` returns the insertion point, not the match; `lo < hi` vs `<=` |
+| `week4/day02_readinglab2.py` | own snippet | the same bubble sort with and without an early exit; comparison counts on sorted vs reversed data |
+| `week4/day03_readinglab3.py` | own snippet | selection vs insertion on one list: swaps vs shifts, and the list after each pass |
+| `week4/day04_readinglab4.py` | own snippet | the call stack as indented `print`s; fib's call count 15 → 67 → 177 |
+| `week4/day05_readinglab5.py` | own snippet | `sys.getrecursionlimit()`; 2000 items break recursion, 2000 items do not break a loop |
