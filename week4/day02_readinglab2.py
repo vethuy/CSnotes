@@ -57,12 +57,21 @@ if __name__ == "__main__":
 
 
 '''PREDICTION - write before running.
-
-1) sorted    [1, 2, 3, 4] : early comparisons = ?   plain = ?
-2) reversed  [4, 3, 2, 1] : early comparisons = ?   plain = ?
-3) mixed     [4, 2, 3, 1] : early comparisons = ?   plain = ?
-4) Which function does the same work on sorted and reversed data, and why?
-5) How many comparisons does bubble_shrinking need for 8 sorted items?
+Let take a look these two functions
+bubble_shrinking(items) one loop at least one swap and for j in range(len(values) - 1 - i) make sure no extra comparisons
+bubble_plain(items) check all combination
+1) sorted    [1, 2, 3, 4] : early comparisons = ?   plain = ?   early=1 plain=9
+2) reversed  [4, 3, 2, 1] : early comparisons = ?   plain = ?   early=6 plain=9
+3) mixed     [4, 2, 3, 1] : early comparisons = ?   plain = ?   early=5 plain=9
+4) Which function does the same work on sorted and reversed data, and why? plain. it check all combination
+5) How many comparisons does bubble_shrinking need for 8 sorted items? worst situation 28
 
 ACTUAL - paste after running.
+sorted    early: 3  plain: 9  result: [1, 2, 3, 4]
+reversed  early: 6  plain: 9  result: [1, 2, 3, 4]
+mixed     early: 6  plain: 9  result: [1, 2, 3, 4]
+1),3) wrong half 2)correct
+(4)and(5) check by dsh
+(4)correct (5)wrong
+total 2/5
 '''

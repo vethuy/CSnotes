@@ -23,6 +23,32 @@ run it on [3, 2, 1] by hand, on paper, before you run the file.
 
 
 def bubble_sort(items):
+    result=list(items)
+    count=0
+    old=[]
+    while old!=result:
+        old=result.copy()
+        for i in range(len(items)-1-count):
+            if result[i]>result[i+1]:
+                result[i],result[i+1]=result[i+1],result[i]
+        count+=1
+    return result
+    ''' 
+    result=list(items)
+    old=[]
+    while result!=old :
+        old=result.copy()
+        for i in range(len(items)-1):
+            if result[i]>result[i+1]:
+                result[i],result[i+1]=result[i+1],result[i]
+    return result
+    '''
+               
+
+
+        
+
+
     """Return a NEW list with the same items sorted ascending.
 
     Compare neighbours and swap when the left one is bigger; after one pass the
@@ -39,6 +65,21 @@ def bubble_sort(items):
 
 
 def bubble_sort_counted(items):
+    result=list(items)
+    old=[]
+    comparisons=0
+    count=0
+    while result!=old :
+        old=result.copy()
+        for i in range(len(items)-1-count):
+            if result[i]>result[i+1]:
+                comparisons+=1
+                result[i],result[i+1]=result[i+1],result[i]
+            else:
+                comparisons+=1
+        count+=1
+    return (result,comparisons)
+               
     """Return (sorted_list, comparisons) using the same algorithm as bubble_sort.
 
     One comparison is one `<` between two neighbouring items. The pass loop
@@ -56,6 +97,18 @@ def bubble_sort_counted(items):
 
 
 def bubble_swaps(items):
+    result=list(items)
+    count=0
+    old=[]
+    swap=0
+    while old!=result:
+        old=result.copy()
+        for i in range(len(items)-1-count):
+            if result[i]>result[i+1]:
+                result[i],result[i+1]=result[i+1],result[i]
+                swap+=1
+        count+=1
+    return swap
     """Return how many swaps bubble_sort would make on items.
 
     A swap is the exchange of two neighbours. The count must agree with

@@ -256,3 +256,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - Q: why `while lo < hi` and not `<=`? A: with `<=` on an absent target, `lo == hi` still enters, `mid == lo`, and `hi = mid` leaves the window unchanged — an infinite loop.
 - Q: in `[1, 3, 3, 3, 7]`, why does `bisect_left` return `1` and not a later `3`? A: equality sets `hi = mid`, keeping the match inside the window and searching the left half again.
 - A window is either half-open (`hi = len(items)`, `lo < hi`) or inclusive (`hi = len(items) - 1`, `lo <= hi`); mixing the two puts `mid` past the last index.
+
+### Day 2 — 2026-11-26 · bubble sort, the comparison count, shrinking passes
+
+**Shipped:** `week4/day02_drill02.py` prints `all drills pass`; reading lab 2 `week4/day02_readinglab2.py` **2/5**.
+
+**Bug:** `old = result` copied the name, not the list, so `result != old` compared a list with itself and the pass loop never ran twice; `while result is not sorted` compared against the builtin function and was always true. `bubble_swaps(result[i], result[i+1])` asked the one-argument function to swap two ints → `TypeError: bubble_swaps() takes 1 positional argument but 2 were given`.
+
+**Learned:**
+- A bubble pass over `n` items costs `n-1` comparisons, not 1: on the sorted 4-item input every one of `(1,2)`, `(2,3)`, `(3,4)` is compared before `swapped` stays `False` and `break` fires — the miss in lab 2 line 1 (**1/5** on that line) and again in Q5, where sorted 8 items cost **7**, not the `28` of the worst case.
+- Q: why is one pass shorter than the last? A: after pass `i` the largest `i+1` items are already at the end, so `range(len(values) - 1 - i)` skips a pair that cannot swap — and this is what turns the worst case into `n(n-1)/2`.
+- The `break` is the O(n)-on-sorted saving and `- i` is not: the shrinking range alone still sweeps a second pass on sorted data, so Q4's "which line makes the difference" is `if not swapped: break`.
