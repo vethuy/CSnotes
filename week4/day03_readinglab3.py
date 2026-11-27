@@ -59,15 +59,28 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1) selection after 1 -> ?
-2) selection after 2 -> ?
-3) selection after 3 -> ?
-4) selection after 4 -> ?
-5) insertion after 1 -> ?
-6) insertion after 2 -> ?
-7) insertion after 3 -> ?
-8) swaps = ?   shifts = ?
-9) Which sort moved the fewest items for this input?
+1) selection after 1 -> ? i=0 1 is the smallest in range(1,4) swap to [1,2,5,4]
+2) selection after 2 -> ? i=1 nothing smaller then 2 no swap
+3) selection after 3 -> ? i=2 4 is the smallest in range(3,4) swap to [1,2,4,5]
+4) selection after 4 -> ? i=3 5 itself so no swap
+5) insertion after 1 -> ? i=1 4>2 shift to [2,4,5,1]
+6) insertion after 2 -> ? i=2 2,4<5 no shift
+7) insertion after 3 -> ? i=3 2,4,5>1 shift to [1,2,4,5]
+8) swaps = ?   shifts = ? swaps = 2   shifts = 4
+9) Which sort moved the fewest items for this input? moved the fewest items:selection sort
+(extra:add by roy insertion use 3 moves and selection use 4 move.)
 
 ACTUAL - paste after running.
+selection after 1 [1, 2, 5, 4]
+selection after 2 [1, 2, 5, 4]
+selection after 3 [1, 2, 4, 5]
+selection after 4 [1, 2, 4, 5]
+insertion after 1 [2, 4, 5, 1]
+insertion after 2 [2, 4, 5, 1]
+insertion after 3 [1, 2, 4, 5]
+selection result [1, 2, 4, 5] swaps 2
+insertion result [1, 2, 4, 5] shifts 4
+original untouched [4, 2, 5, 1]
+1)~8) correct 9) need to check by dsh
+
 '''

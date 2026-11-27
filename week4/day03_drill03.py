@@ -24,6 +24,15 @@ tonight's reading lab.
 
 
 def min_index(items, start):
+    if items[start:]==[]:
+        raise ValueError('min_index: empty range')
+    min=max(items)
+    for i in items[start:]:
+        if i < min:
+            min=i
+    return items.index(min)
+
+    
     """Return the index of the smallest item in items[start:], first one on a tie.
 
     `start` is a valid index into a non-empty slice. If items[start:] is empty,
@@ -39,6 +48,15 @@ def min_index(items, start):
 
 
 def selection_sort(items):
+    result=list(items)
+    for i in range(len(items)):
+        small_index=(min_index(result,i))
+        if i==small_index:
+            continue
+        else:
+            result[i],result[small_index]=result[small_index],result[i]
+    return result
+            
     """Return a NEW list, sorted ascending, using selection sort.
 
     For each position i, find the smallest item in items[i:] and swap it into
@@ -57,6 +75,15 @@ def selection_sort(items):
 # FUNCTION INTRODUCTION: result.insert(pos, value) shifts everything from pos
 # right and puts value there - see week1/day05_days_between.py:26.
 def insertion_sort(items):
+    result=list(items)
+    for i in range(1,len(items)):
+        value=result[i]
+        for j in result[0:i]:
+            if value<j:
+                ind=result.index(j)
+                result[ind],result[i]=result[i],result[ind]           
+    return result
+
     """Return a NEW list, sorted ascending, using insertion sort.
 
     Grow a sorted prefix: take the next item, slide the bigger items in the

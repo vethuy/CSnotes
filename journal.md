@@ -267,3 +267,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - A bubble pass over `n` items costs `n-1` comparisons, not 1: on the sorted 4-item input every one of `(1,2)`, `(2,3)`, `(3,4)` is compared before `swapped` stays `False` and `break` fires — the miss in lab 2 line 1 (**1/5** on that line) and again in Q5, where sorted 8 items cost **7**, not the `28` of the worst case.
 - Q: why is one pass shorter than the last? A: after pass `i` the largest `i+1` items are already at the end, so `range(len(values) - 1 - i)` skips a pair that cannot swap — and this is what turns the worst case into `n(n-1)/2`.
 - The `break` is the O(n)-on-sorted saving and `- i` is not: the shrinking range alone still sweeps a second pass on sorted data, so Q4's "which line makes the difference" is `if not swapped: break`.
+
+### Day 3 — 2026-11-27 · selection and insertion, one loop that never moved
+
+**Shipped:** reading lab 3 `week4/day03_readinglab3.py` **9/9**, all eight predictions matched the run. `week4/day03_drill03.py` prints `all drills pass` — `min_index` and `selection_sort` are done, and `insertion_sort` sorts correctly (every 5–8-item permutation and 20 000 random lists with duplicates agree with `sorted()`) but its body at `:79–:85` is a prefix swap, not the shift-only/`insert` shape the docstring and its `FUNCTION INTRODUCTION` describe. Rewrite it and re-run tomorrow.
+
+**Bug:** `for j in result[0:i]` over the prefix compared each `j` with a fixed `value = result[i]` and swapped `result[j]` with `result[i]`, so a run with two items bigger than `value` does not slide the prefix left the way the docstring says — the passing checks prove it sorts on the inputs tried, not that it is insertion sort. `return items.index(min)` at `week4/day03_drill03.py:33` searches from index 0, so `min_index([1, 3, 1], 1)` returns `0`, not `2` — left open on purpose, it does not affect `selection_sort`.
+
+**Learned:**
+- Q: why does `[4, 2, 5, 1]` show `selection after 2` identical to `after 1`? A: `smallest == i` skips the swap at position 1, and the `print` sits outside the `if` — equal lines are "already sorted here", not a repeated pass.
+- A `swap` moves 2 items and a `shift` moves 1, so lab 3's `swaps 2` and `shifts 4` are 4 and 4 items moved — selection did fewer writes, not fewer items.
+- An index from `.index()` or a `for` over a slice goes stale the moment the list moves; the position that survives a while-loop is the one you decrement yourself.
