@@ -278,3 +278,14 @@ this file. Look Format definition: `CSstudy\RULES-BUILDFORMAT.md` §2.3.
 - Q: why does `[4, 2, 5, 1]` show `selection after 2` identical to `after 1`? A: `smallest == i` skips the swap at position 1, and the `print` sits outside the `if` — equal lines are "already sorted here", not a repeated pass.
 - A `swap` moves 2 items and a `shift` moves 1, so lab 3's `swaps 2` and `shifts 4` are 4 and 4 items moved — selection did fewer writes, not fewer items.
 - An index from `.index()` or a `for` over a slice goes stale the moment the list moves; the position that survives a while-loop is the one you decrement yourself.
+
+### Day 4 — 2026-11-28 · recursion, a base case, a `while` loop that had to go
+
+**Shipped:** `week4/day04_drill04.py` prints `all drills pass` — `factorial`, `fib`, `sum_to`, all three recursion-only, no check block edited. Reading lab 4 `week4/day04_readinglab4.py` **5/7**; `ACTUAL` matches the run, including the indented call-stack staircase.
+
+**Bug:** `while n>0: value = n * factorial(n-1)` at `week4/day04_drill04.py:30` made `factorial(5)` call `factorial(4)` forever — `n` never changes inside the loop, so the same frame re-asks the same question until `RecursionError`; before the base case existed it was `UnboundLocalError: cannot access local variable 'value'` at `:31`, because `n == 0` skipped the loop body. Q3 read `return 24`, but the last line of the factorial block is `factorial(4) = 24` (printed by `:46` after the return); Q7 guessed `2`, the real growth is the Fibonacci ratio **≈ 1.6**.
+
+**Learned:**
+- Q: why does `fib(5)` make **15** calls for an answer of 5? A: `fib(n-1)` and `fib(n-2)` are independent calls with no shared memory, so each branch rebuilds the same smaller answers — `fib(2)` is computed three times.
+- A recursive function repeats through **the smaller call**, not through a `while`: the loop's counter never shrinks, and the frame that loops is the same frame that already asked.
+- `calls[0] += 1` counts across frames because it mutates the list item; `calls += 1` would rebind a local name and need `global`.

@@ -23,6 +23,13 @@ writing each call and each return, before you type anything.
 
 
 def factorial(n):
+    if n<0:
+        raise ValueError('n must <=0')
+    if n==0:
+        return 1
+    value=n*factorial(n-1)
+    return value
+    
     """Return n! for a whole number n >= 0; raise ValueError otherwise.
 
     factorial(0) is 1 by definition, so the base case is n == 0 and every
@@ -37,6 +44,14 @@ def factorial(n):
 
 
 def fib(n):
+    if n<0:
+        raise ValueError('n must >=0')
+    if n==0:
+        return 0
+    if n==1:
+        return 1
+    value=fib(n-1)+fib(n-2)
+    return value
     """Return the nth Fibonacci number, with fib(0) == 0 and fib(1) == 1.
 
     Write the slow, obvious recursion: two calls per step, no loop and no
@@ -53,6 +68,12 @@ def fib(n):
 
 
 def sum_to(n):
+    if n<0:
+        raise ValueError('n must >=0')
+    if n==0:
+        return 0
+    value=n+sum_to(n-1)
+    return value
     """Return 1 + 2 + ... + n for n >= 0; raise ValueError otherwise.
 
     The base case is n == 0, which adds nothing, so sum_to(0) -> 0 and

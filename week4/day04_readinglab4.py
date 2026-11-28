@@ -54,13 +54,32 @@ if __name__ == "__main__":
 
 '''PREDICTION - write before running.
 
-1) How many "call factorial(" lines?  ?
-2) How many "return" lines?  ?
-3) What is the LAST line printed by the factorial block?
-4) fib(5)  = ?   calls = ?
-5) fib(8)  = ?   calls = ?
-6) fib(10) = ?   calls = ?
-7) Each extra n multiplies the calls by roughly what number?
+1) How many "call factorial(" lines?  ? 5 times 4,3,2,1,0
+2) How many "return" lines?  ? 5
+3) What is the LAST line printed by the factorial block? return 24
+honestly. it is hard and boring to count every calls . so calls answer and numbers are provide by dsh
+4) fib(5)  = ?   calls = ?     fib(5)  = 5  calls = 15
+5) fib(8)  = ?   calls = ?     fib(8)  = 21   calls = 67
+6) fib(10) = ?   calls = ?     fib(10) = 55   calls = 177
+7) Each extra n multiplies the calls by roughly what number? 2
 
 ACTUAL - paste after running.
+--- factorial(4)
+call factorial(4)
+  call factorial(3)
+    call factorial(2)
+      call factorial(1)
+        call factorial(0)
+        return 1
+      return 1
+    return 2
+  return 6
+return 24
+factorial(4) = 24
+--- fib
+fib(5) = 5  calls = 15
+fib(8) = 21  calls = 67
+fib(10) = 55  calls = 177
+1)~3) correct 4)~6) doesnt count 7) need check by dsh
+5/7
 '''
